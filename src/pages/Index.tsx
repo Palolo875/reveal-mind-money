@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { QuestionInput } from '@/components/QuestionInput';
 import { FinancialDataForm } from '@/components/FinancialDataForm';
-import { Dashboard } from '@/components/Dashboard';
+import { EnhancedDashboard } from '@/components/EnhancedDashboard';
 import { ParticleSystem } from '@/components/ParticleSystem';
 import { useFinancialEngine } from '@/hooks/useFinancialEngine';
 import { Card } from '@/components/ui/card';
@@ -73,7 +73,7 @@ const Index = () => {
   }
 
   if (currentStep === 'revelation' && insight) {
-    return <Dashboard insight={insight} question={question} onNewExploration={handleNewExploration} />;
+    return <EnhancedDashboard insight={insight} question={question} onNewExploration={handleNewExploration} financialData={financialData} />;
   }
 
   return (
