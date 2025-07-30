@@ -532,20 +532,10 @@ export const ComprehensiveHiddenCostsDetector = ({
   );
 };
 
-// Remaining components with basic implementations
-export const PredictiveAnalytics = ({ insight, financialData, timeframe }: any) => (
-  <Card className="card-premium">
-    <h2 className="text-xl font-semibold text-primary mb-4">🔮 IA Prédictive</h2>
-    <p className="text-muted-foreground">Module d'IA prédictive en cours de développement...</p>
-  </Card>
-);
-
-export const GoalTracker = ({ currentProjections, recommendations }: any) => (
-  <Card className="card-premium">
-    <h2 className="text-xl font-semibold text-primary mb-4">🎯 Suivi d'Objectifs</h2>
-    <p className="text-muted-foreground">Module de suivi d'objectifs en cours de développement...</p>
-  </Card>
-);
+// Import the actual components
+export { PredictiveAnalytics } from './PredictiveAnalytics';
+export { GoalTracker } from './GoalTracker';
+export { EmotionalInsightEngine } from './EmotionalInsightEngine';
 
 export const SmartRecommendations = ({ recommendations, emotionalState, healthScore }: any) => (
   <Card className="card-premium">
@@ -561,19 +551,7 @@ export const SmartRecommendations = ({ recommendations, emotionalState, healthSc
   </Card>
 );
 
-export const EmotionalInsightEngine = ({ emotionalState, emotionalPatterns, financialData }: any) => (
-  <Card className="card-emotional">
-    <h2 className="text-xl font-semibold text-primary mb-4">🧠 Moteur d'Insights Émotionnels</h2>
-    <p className="text-muted-foreground">Analyse émotionnelle en cours de développement...</p>
-  </Card>
-);
-
-export const FinancialComparator = ({ userInsight, marketData }: any) => (
-  <Card className="card-premium">
-    <h2 className="text-xl font-semibold text-primary mb-4">📊 Comparateur Financier</h2>
-    <p className="text-muted-foreground">Comparaison avec les pairs en cours de développement...</p>
-  </Card>
-);
+export { FinancialComparator } from './FinancialComparator';
 
 export const ShareAndExport = ({ insight, question, theme }: any) => {
   const handleExportPDF = () => {
