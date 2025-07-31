@@ -470,7 +470,7 @@ export const FinancialComparator = ({
               <div className="font-semibold">Habitude clé</div>
             </div>
             <p className="text-sm text-muted-foreground">
-              Révision mensuelle du budget pratiquée par 94% des utilisateurs avec score >800
+              Révision mensuelle du budget pratiquée par 94% des utilisateurs avec score {'>'}800
             </p>
           </div>
         </div>
