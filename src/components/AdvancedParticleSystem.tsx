@@ -1,6 +1,7 @@
 
 import { useEffect, useRef } from 'react';
 import { useStore } from '@/store/useStore';
+import { getThemeConfig } from './ThemeSystem';
 
 interface Particle {
   x: number;
@@ -52,9 +53,12 @@ export const AdvancedParticleSystem = ({
 
     const initParticles = () => {
       const colors = THEME_COLORS[theme];
+      const themeConfig = getThemeConfig(theme);
+      const particleCount = count || themeConfig.particles.count;
+      
       particlesRef.current = [];
 
-      for (let i = 0; i < count; i++) {
+      for (let i = 0; i < particleCount; i++) {
         particlesRef.current.push({
           x: Math.random() * canvas.width,
           y: Math.random() * canvas.height,

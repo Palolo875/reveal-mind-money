@@ -56,10 +56,11 @@ export const ThemeSystem = () => {
     // Update body class
     document.body.className = `theme-${theme}`;
     
-    // Store particle config for use by ParticleSystem
-    window.themeConfig = config;
-    
   }, [theme]);
 
   return null;
+};
+
+export const getThemeConfig = (theme: string) => {
+  return THEME_CONFIGS[theme as keyof typeof THEME_CONFIGS] || THEME_CONFIGS.aurora;
 };

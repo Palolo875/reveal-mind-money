@@ -35,6 +35,9 @@ export const GlassCard = React.forwardRef<HTMLDivElement, GlassCardProps>(
       className
     );
 
+    // Extract potential conflicting props
+    const { onDrag, onDragStart, onDragEnd, draggable, ...safeProps } = props;
+
     if (interactive) {
       return (
         <motion.div
@@ -43,7 +46,7 @@ export const GlassCard = React.forwardRef<HTMLDivElement, GlassCardProps>(
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           transition={{ duration: 0.2 }}
-          {...props}
+          {...safeProps}
         >
           {children}
         </motion.div>
