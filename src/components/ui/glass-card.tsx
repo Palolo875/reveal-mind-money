@@ -35,7 +35,7 @@ export const GlassCard = React.forwardRef<HTMLDivElement, GlassCardProps>(
       className
     );
 
-    // Extract ALL potentially conflicting React event handlers
+    // Extract only the event handlers that actually exist on React HTMLDivElement props
     const {
       onDrag,
       onDragStart,
@@ -44,10 +44,7 @@ export const GlassCard = React.forwardRef<HTMLDivElement, GlassCardProps>(
       onAnimationStart,
       onAnimationEnd,
       onAnimationIteration,
-      onTransitionStart,
       onTransitionEnd,
-      onTransitionRun,
-      onTransitionCancel,
       ...safeProps
     } = props;
 
