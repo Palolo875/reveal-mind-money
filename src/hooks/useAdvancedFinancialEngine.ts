@@ -2,6 +2,7 @@
 import { useState, useCallback } from 'react';
 import { useStore } from '@/store/useStore';
 import { FinancialData, AdvancedInsight } from '@/store/useStore';
+import { aiService } from '@/services/aiService';
 
 interface FinancialItem {
   id: string;
@@ -93,6 +94,7 @@ const MOOD_ARCHETYPES = {
 export const useAdvancedFinancialEngine = () => {
   const { setIsAnalyzing, addExploration } = useStore();
   const [insight, setInsight] = useState<AdvancedInsight | null>(null);
+  const [aiProvider, setAiProvider] = useState<string>('fallback');
 
   const calculateAdvancedInsight = useCallback(async (
     data: FinancialData, 
@@ -100,8 +102,49 @@ export const useAdvancedFinancialEngine = () => {
   ): Promise<AdvancedInsight> => {
     setIsAnalyzing(true);
     
-    // Simulate advanced AI processing
-    await new Promise(resolve => setTimeout(resolve, 3500));
+    try {
+      // Utiliser le service IA pour l'analyse
+      const aiAnalysis = await aiService.analyzeFinancialData(data, question);
+      setAiProvider(aiService.getCurrentProvider());
+      
+      // Convertir la réponse IA en format AdvancedInsight
+      const result: AdvancedInsight = {
+        equation: aiAnalysis.equation,
+        insight: aiAnalysis.insight,
+        comparison: aiAnalysis.comparison,
+        emotionalState: aiAnalysis.emotionalState,
+        healthScore: aiAnalysis.healthScore,
+        recommendations: aiAnalysis.recommendations,
+        hiddenCosts: aiAnalysis.hiddenCosts,
+        projections: aiAnalysis.projections,
+        emotionalPatterns: aiAnalysis.emotionalPatterns,
+        marketComparisons: aiAnalysis.marketComparisons,
+        riskAssessment: aiAnalysis.riskAssessment,
+        behavioralPatterns: aiAnalysis.behavioralPatterns,
+        aiPredictions: aiAnalysis.aiPredictions
+      };
+
+      setInsight(result);
+      setIsAnalyzing(false);
+      return result;
+      
+    } catch (error) {
+      console.error('Erreur analyse IA:', error);
+      
+      // Fallback vers l'ancienne logique si l'IA échoue
+      const fallbackResult = await calculateFallbackInsight(data, question);
+      setAiProvider('fallback');
+      
+      setInsight(fallbackResult);
+      setIsAnalyzing(false);
+      return fallbackResult;
+    }
+  }, [setIsAnalyzing]);
+
+  // Ancienne logique de fallback
+  const calculateFallbackInsight = async (data: FinancialData, question: string): Promise<AdvancedInsight> => {
+    // Simuler le traitement
+    await new Promise(resolve => setTimeout(resolve, 2000));
 
     const totalIncome = data.income.reduce((sum, item) => sum + item.amount, 0);
     const totalFixed = data.fixedExpenses.reduce((sum, item) => sum + item.amount, 0);
@@ -226,10 +269,8 @@ export const useAdvancedFinancialEngine = () => {
       aiPredictions
     };
 
-    setInsight(result);
-    setIsAnalyzing(false);
     return result;
-  }, [setIsAnalyzing]);
+  };
 
   const runWhatIfSimulation = useCallback((
     originalData: FinancialData, 
@@ -239,9 +280,23 @@ export const useAdvancedFinancialEngine = () => {
     return calculateAdvancedInsight(modifiedData, "Simulation Et si ?");
   }, [calculateAdvancedInsight]);
 
+  // Méthode pour changer de provider IA
+  const switchAIProvider = useCallback(async (provider: 'ollama' | 'huggingface' | 'cohere' | 'fallback') => {
+    await aiService.switchProvider(provider);
+    setAiProvider(provider);
+  }, []);
+
+  // Méthode pour tester la connectivité IA
+  const testAIConnection = useCallback(async () => {
+    return await aiService.testConnection();
+  }, []);
+
   return {
     insight,
     calculateAdvancedInsight,
-    runWhatIfSimulation
+    runWhatIfSimulation,
+    aiProvider,
+    switchAIProvider,
+    testAIConnection
   };
 };
