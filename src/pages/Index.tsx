@@ -3,14 +3,33 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useStore } from '@/store/useStore';
 import { useAdvancedFinancialEngine } from '@/hooks/useAdvancedFinancialEngine';
+import { RevolutionaryHero } from '@/components/RevolutionaryHero';
+import { RevolutionaryNavigation } from '@/components/RevolutionaryNavigation';
 import { ConversationalInterface } from '@/components/ConversationalInterface';
 import { LazyRevolutionaryDashboard } from '@/components/LazyComponents';
 import { FinancialDataForm } from '@/components/FinancialDataForm';
 import { AdvancedParticleSystem } from '@/components/AdvancedParticleSystem';
-import { GlassCard } from '@/components/ui/glass-card';
-import { Button } from '@/components/ui/button';
+import { RevolutionaryCard } from '@/components/ui/revolutionary-card';
+import { RevolutionaryButton } from '@/components/ui/revolutionary-button';
+import { RevolutionaryInput } from '@/components/ui/revolutionary-input';
 import { Progress } from '@/components/ui/progress';
-import { ArrowLeft, Brain, Sparkles } from 'lucide-react';
+import { 
+  ArrowLeft, 
+  Brain, 
+  Sparkles, 
+  Target,
+  TrendingUp,
+  Shield,
+  Zap,
+  Users,
+  Award,
+  Globe,
+  Star,
+  Play,
+  BookOpen,
+  Lightbulb,
+  BarChart3
+} from 'lucide-react';
 import { FinancialData, Exploration } from '@/store/useStore';
 
 const Index = () => {
@@ -21,12 +40,15 @@ const Index = () => {
     setCurrentStep, 
     setCurrentExploration,
     addExploration,
-    theme
+    theme,
+    setTheme
   } = useStore();
   
   const { insight, calculateAdvancedInsight } = useAdvancedFinancialEngine();
   const [question, setQuestion] = useState('');
   const [analysisStage, setAnalysisStage] = useState('');
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState('home');
 
   useEffect(() => {
     if (isAnalyzing) {
@@ -53,6 +75,13 @@ const Index = () => {
   const handleQuestionSubmit = (userQuestion: string) => {
     setQuestion(userQuestion);
     setCurrentStep('data');
+    setCurrentPage('exploration');
+  };
+
+  const handleQuickQuestion = (userQuestion: string) => {
+    setQuestion(userQuestion);
+    setCurrentStep('data');
+    setCurrentPage('exploration');
   };
 
   const handleDataSubmit = async (data: FinancialData) => {
@@ -77,6 +106,14 @@ const Index = () => {
     setCurrentStep('question');
     setCurrentExploration(null);
     setQuestion('');
+    setCurrentPage('home');
+  };
+
+  const handleNavigate = (page: string) => {
+    setCurrentPage(page);
+    if (page === 'exploration') {
+      setCurrentStep('question');
+    }
   };
 
   const getStepProgress = () => {
@@ -97,22 +134,337 @@ const Index = () => {
     }
   };
 
+  const renderHomePage = () => (
+    <RevolutionaryHero
+      onStartExploration={() => {
+        setCurrentPage('exploration');
+        setCurrentStep('question');
+      }}
+      onQuickQuestion={handleQuickQuestion}
+    />
+  );
+
+  const renderExplorationPage = () => (
+    <div className="min-h-screen relative overflow-hidden">
+      <AdvancedParticleSystem count={30} />
+      
+      <div className="container max-w-4xl mx-auto px-6 py-8 relative z-10">
+        <motion.div 
+          initial={{ y: -50, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          className="mb-8"
+        >
+          <RevolutionaryCard variant="hero" blur="xl" className="p-6">
+            <div className="flex items-center gap-4 mb-6">
+              <RevolutionaryButton 
+                variant="glass" 
+                size="sm" 
+                onClick={() => setCurrentPage('home')}
+                icon={<ArrowLeft className="w-4 h-4" />}
+              >
+                Retour
+              </RevolutionaryButton>
+              <div className="flex-1">
+                <h1 className="text-3xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                  {getStepTitle()}
+                </h1>
+                <p className="text-muted-foreground text-sm mt-1">
+                  Question : "{question}"
+                </p>
+              </div>
+            </div>
+            
+            <div className="space-y-2">
+              <div className="flex justify-between text-sm text-muted-foreground">
+                <span>Progression de l'analyse</span>
+                <span>{getStepProgress()}%</span>
+              </div>
+              <Progress value={getStepProgress()} className="h-3" />
+            </div>
+          </RevolutionaryCard>
+        </motion.div>
+
+        <motion.div
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ delay: 0.2 }}
+          className="space-y-6"
+        >
+          <RevolutionaryCard variant="premium" blur="lg" className="p-8 text-center">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <Sparkles className="w-8 h-8 text-primary animate-pulse" />
+              <h2 className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                Cartographie Financière Quantique
+              </h2>
+              <Sparkles className="w-8 h-8 text-secondary animate-pulse" />
+            </div>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Notre IA va analyser vos données pour révéler des insights financiers impossibles à détecter humainement. 
+              Chaque information compte pour créer votre équation financière personnalisée.
+            </p>
+          </RevolutionaryCard>
+          
+          <FinancialDataForm onDataSubmit={handleDataSubmit} />
+        </motion.div>
+      </div>
+    </div>
+  );
+
+  const renderRevelationPage = () => (
+    <div className="min-h-screen relative overflow-hidden">
+      <AdvancedParticleSystem count={50} />
+      
+      <div className="container mx-auto px-6 py-8 relative z-10">
+        {insight && currentExploration && (
+          <LazyRevolutionaryDashboard 
+            insight={insight} 
+            question={question} 
+            onNewExploration={handleNewExploration}
+            financialData={currentExploration.data}
+          />
+        )}
+      </div>
+    </div>
+  );
+
+  const renderAnalyticsPage = () => (
+    <div className="min-h-screen relative overflow-hidden lg:ml-80">
+      <AdvancedParticleSystem count={40} />
+      
+      <div className="container mx-auto px-6 py-8 relative z-10">
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="space-y-8"
+        >
+          <RevolutionaryCard variant="hero" blur="xl" className="p-8">
+            <div className="flex items-center gap-4 mb-6">
+              <BarChart3 className="w-8 h-8 text-primary" />
+              <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                Analytics Avancés
+              </h1>
+            </div>
+            <p className="text-muted-foreground">
+              Analysez vos données financières avec des outils d'intelligence artificielle avancés.
+            </p>
+          </RevolutionaryCard>
+
+          <div className="grid lg:grid-cols-2 gap-6">
+            <RevolutionaryCard variant="quantum" blur="lg" className="p-6">
+              <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
+                <TrendingUp className="w-5 h-5 text-green-500" />
+                Tendances Financières
+              </h3>
+              <p className="text-muted-foreground">
+                Visualisez vos patterns de dépenses et d'épargne sur le temps.
+              </p>
+            </RevolutionaryCard>
+
+            <RevolutionaryCard variant="morphic" blur="lg" className="p-6">
+              <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
+                <Target className="w-5 h-5 text-blue-500" />
+                Objectifs & Projections
+              </h3>
+              <p className="text-muted-foreground">
+                Suivez vos objectifs financiers et projetez votre avenir.
+              </p>
+            </RevolutionaryCard>
+          </div>
+        </motion.div>
+      </div>
+    </div>
+  );
+
+  const renderGoalsPage = () => (
+    <div className="min-h-screen relative overflow-hidden lg:ml-80">
+      <AdvancedParticleSystem count={35} />
+      
+      <div className="container mx-auto px-6 py-8 relative z-10">
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="space-y-8"
+        >
+          <RevolutionaryCard variant="hero" blur="xl" className="p-8">
+            <div className="flex items-center gap-4 mb-6">
+              <Target className="w-8 h-8 text-primary" />
+              <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                Objectifs Financiers
+              </h1>
+            </div>
+            <p className="text-muted-foreground">
+              Définissez et suivez vos objectifs financiers avec l'aide de l'IA.
+            </p>
+          </RevolutionaryCard>
+
+          <div className="grid lg:grid-cols-3 gap-6">
+            <RevolutionaryCard variant="glass" blur="md" className="p-6">
+              <h3 className="text-lg font-semibold mb-3">Épargne</h3>
+              <p className="text-muted-foreground text-sm">
+                Objectifs d'épargne à court et long terme
+              </p>
+            </RevolutionaryCard>
+
+            <RevolutionaryCard variant="glass" blur="md" className="p-6">
+              <h3 className="text-lg font-semibold mb-3">Investissement</h3>
+              <p className="text-muted-foreground text-sm">
+                Stratégies d'investissement personnalisées
+              </p>
+            </RevolutionaryCard>
+
+            <RevolutionaryCard variant="glass" blur="md" className="p-6">
+              <h3 className="text-lg font-semibold mb-3">Retraite</h3>
+              <p className="text-muted-foreground text-sm">
+                Planification de la retraite optimisée
+              </p>
+            </RevolutionaryCard>
+          </div>
+        </motion.div>
+      </div>
+    </div>
+  );
+
+  const renderSimulatorPage = () => (
+    <div className="min-h-screen relative overflow-hidden lg:ml-80">
+      <AdvancedParticleSystem count={45} />
+      
+      <div className="container mx-auto px-6 py-8 relative z-10">
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="space-y-8"
+        >
+          <RevolutionaryCard variant="hero" blur="xl" className="p-8">
+            <div className="flex items-center gap-4 mb-6">
+              <Play className="w-8 h-8 text-primary" />
+              <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                Simulateur "What If"
+              </h1>
+            </div>
+            <p className="text-muted-foreground">
+              Testez différents scénarios financiers et découvrez leurs impacts.
+            </p>
+          </RevolutionaryCard>
+
+          <RevolutionaryCard variant="quantum" blur="lg" className="p-8">
+            <h3 className="text-xl font-semibold mb-4">Scénarios Disponibles</h3>
+            <div className="grid md:grid-cols-2 gap-4">
+              <RevolutionaryButton variant="glass" size="lg" fullWidth>
+                Augmentation de salaire
+              </RevolutionaryButton>
+              <RevolutionaryButton variant="glass" size="lg" fullWidth>
+                Nouvel investissement
+              </RevolutionaryButton>
+              <RevolutionaryButton variant="glass" size="lg" fullWidth>
+                Achat immobilier
+              </RevolutionaryButton>
+              <RevolutionaryButton variant="glass" size="lg" fullWidth>
+                Changement de carrière
+              </RevolutionaryButton>
+            </div>
+          </RevolutionaryCard>
+        </motion.div>
+      </div>
+    </div>
+  );
+
+  const renderLearnPage = () => (
+    <div className="min-h-screen relative overflow-hidden lg:ml-80">
+      <AdvancedParticleSystem count={30} />
+      
+      <div className="container mx-auto px-6 py-8 relative z-10">
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="space-y-8"
+        >
+          <RevolutionaryCard variant="hero" blur="xl" className="p-8">
+            <div className="flex items-center gap-4 mb-6">
+              <BookOpen className="w-8 h-8 text-primary" />
+              <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                Centre d'Apprentissage
+              </h1>
+            </div>
+            <p className="text-muted-foreground">
+              Développez vos compétences financières avec nos ressources éducatives.
+            </p>
+          </RevolutionaryCard>
+
+          <div className="grid lg:grid-cols-2 gap-6">
+            <RevolutionaryCard variant="morphic" blur="lg" className="p-6">
+              <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
+                <Lightbulb className="w-5 h-5 text-yellow-500" />
+                Concepts de Base
+              </h3>
+              <p className="text-muted-foreground">
+                Apprenez les fondamentaux de la gestion financière personnelle.
+              </p>
+            </RevolutionaryCard>
+
+            <RevolutionaryCard variant="quantum" blur="lg" className="p-6">
+              <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
+                <TrendingUp className="w-5 h-5 text-green-500" />
+                Stratégies Avancées
+              </h3>
+              <p className="text-muted-foreground">
+                Découvrez des stratégies d'investissement et d'optimisation fiscale.
+              </p>
+            </RevolutionaryCard>
+          </div>
+        </motion.div>
+      </div>
+    </div>
+  );
+
+  const renderCurrentPage = () => {
+    switch (currentPage) {
+      case 'home':
+        return renderHomePage();
+      case 'exploration':
+        return renderExplorationPage();
+      case 'analytics':
+        return renderAnalyticsPage();
+      case 'goals':
+        return renderGoalsPage();
+      case 'simulator':
+        return renderSimulatorPage();
+      case 'learn':
+        return renderLearnPage();
+      default:
+        return renderHomePage();
+    }
+  };
+
   return (
     <>
+      <RevolutionaryNavigation
+        currentStep={currentPage}
+        onNavigate={handleNavigate}
+        onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+        isSidebarOpen={isSidebarOpen}
+        progress={getStepProgress()}
+        theme={theme}
+        onThemeChange={setTheme}
+      />
+
       <AnimatePresence mode="wait">
-        {currentStep === 'question' && (
+        {currentStep === 'question' && currentPage === 'exploration' && (
           <motion.div
             key="question"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
+            className="min-h-screen relative overflow-hidden lg:ml-80"
           >
-            <ConversationalInterface onQuestionSubmit={handleQuestionSubmit} />
+            <AdvancedParticleSystem count={40} />
+            <div className="container mx-auto px-6 py-8 relative z-10">
+              <ConversationalInterface onQuestionSubmit={handleQuestionSubmit} />
+            </div>
           </motion.div>
         )}
 
-        {currentStep === 'revelation' && insight && currentExploration && (
+        {currentStep === 'revelation' && (
           <motion.div
             key="revelation"
             initial={{ opacity: 0 }}
@@ -120,156 +472,19 @@ const Index = () => {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <LazyRevolutionaryDashboard 
-              insight={insight} 
-              question={question} 
-              onNewExploration={handleNewExploration}
-              financialData={currentExploration.data}
-            />
+            {renderRevelationPage()}
           </motion.div>
         )}
 
-        {currentStep === 'data' && (
+        {currentStep !== 'question' && currentStep !== 'revelation' && (
           <motion.div
-            key="data"
+            key={currentPage}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
-            className="min-h-screen relative overflow-hidden"
           >
-            <AdvancedParticleSystem count={30} />
-            
-            <div className="container max-w-4xl mx-auto px-6 py-8 relative z-10">
-              <motion.div 
-                initial={{ y: -50, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                className="mb-8"
-              >
-                <GlassCard variant="hero" blur="xl" className="p-6">
-                  <div className="flex items-center gap-4 mb-6">
-                    <Button 
-                      variant="ghost" 
-                      size="sm" 
-                      onClick={() => setCurrentStep('question')}
-                      className="bg-background/20 hover:bg-background/40 backdrop-blur-sm"
-                    >
-                      <ArrowLeft className="w-4 h-4 mr-2" />
-                      Retour
-                    </Button>
-                    <div className="flex-1">
-                      <h1 className="text-3xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                        {getStepTitle()}
-                      </h1>
-                      <p className="text-muted-foreground text-sm mt-1">
-                        Question : "{question}"
-                      </p>
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-sm text-muted-foreground">
-                      <span>Progression de l'analyse</span>
-                      <span>{getStepProgress()}%</span>
-                    </div>
-                    <Progress value={getStepProgress()} className="h-3" />
-                  </div>
-                </GlassCard>
-              </motion.div>
-
-              <motion.div
-                initial={{ scale: 0.9, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ delay: 0.2 }}
-                className="space-y-6"
-              >
-                <GlassCard variant="premium" blur="lg" className="p-8 text-center">
-                  <div className="flex items-center justify-center gap-3 mb-4">
-                    <Sparkles className="w-8 h-8 text-primary animate-pulse" />
-                    <h2 className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                      Cartographie Financière Quantique
-                    </h2>
-                    <Sparkles className="w-8 h-8 text-secondary animate-pulse" />
-                  </div>
-                  <p className="text-muted-foreground max-w-2xl mx-auto">
-                    Notre IA va analyser vos données pour révéler des insights financiers impossibles à détecter humainement. 
-                    Chaque information compte pour créer votre équation financière personnalisée.
-                  </p>
-                </GlassCard>
-                
-                <FinancialDataForm onDataSubmit={handleDataSubmit} />
-              </motion.div>
-            </div>
-          </motion.div>
-        )}
-
-        {currentStep === 'revelation' && isAnalyzing && (
-          <motion.div
-            key="loading"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="min-h-screen flex items-center justify-center relative overflow-hidden"
-          >
-            <AdvancedParticleSystem count={80} interactive constellation />
-            
-            <GlassCard variant="hero" blur="xl" glow className="max-w-2xl mx-6 p-12 text-center">
-              <motion.div
-                animate={{ 
-                  scale: [1, 1.1, 1],
-                  rotate: [0, 180, 360]
-                }}
-                transition={{ 
-                  duration: 2,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
-                className="text-8xl mb-8"
-              >
-                🧠
-              </motion.div>
-              
-              <h2 className="text-4xl font-bold mb-6 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                Analyse Quantique en Cours
-              </h2>
-              
-              <motion.p 
-                key={analysisStage}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="text-xl text-muted-foreground mb-8"
-              >
-                {analysisStage}
-              </motion.p>
-              
-              <div className="space-y-6">
-                <div className="grid grid-cols-3 gap-4 text-center">
-                  {[
-                    { icon: '🎯', label: 'Patterns détectés', value: '47' },
-                    { icon: '🧮', label: 'Corrélations', value: '23' },
-                    { icon: '🔮', label: 'Prédictions', value: '12' }
-                  ].map((stat, index) => (
-                    <motion.div
-                      key={index}
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      transition={{ delay: index * 0.2 }}
-                      className="space-y-2"
-                    >
-                      <div className="text-3xl">{stat.icon}</div>
-                      <div className="text-2xl font-bold text-primary">{stat.value}</div>
-                      <div className="text-xs text-muted-foreground">{stat.label}</div>
-                    </motion.div>
-                  ))}
-                </div>
-                
-                <Progress value={85} className="h-4" />
-                
-                <div className="flex items-center justify-center gap-2 text-sm text-primary">
-                  <Brain className="w-4 h-4 animate-pulse" />
-                  <span>IA Neuronale Rivela v3.0 • Fiabilité: 94%</span>
-                </div>
-              </div>
-            </GlassCard>
+            {renderCurrentPage()}
           </motion.div>
         )}
       </AnimatePresence>
