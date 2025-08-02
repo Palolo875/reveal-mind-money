@@ -9,8 +9,8 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import { Users, TrendingUp, Award, Target, Info, Crown, Medal, Star } from 'lucide-react';
 
 interface FinancialComparatorProps {
-  userInsight: any;
-  marketData?: any;
+  userInsight: import('@/types').AdvancedInsight;
+  marketData?: { averages: Record<string, number>; percentiles: Record<string, number> };
 }
 
 export const FinancialComparator = ({ 

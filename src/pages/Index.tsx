@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useStore } from '@/store/useStore';
 import { useAdvancedFinancialEngine } from '@/hooks/useAdvancedFinancialEngine';
 import { ConversationalInterface } from '@/components/ConversationalInterface';
-import { RevolutionaryDashboard } from '@/components/RevolutionaryDashboard';
+import { LazyRevolutionaryDashboard } from '@/components/LazyComponents';
 import { FinancialDataForm } from '@/components/FinancialDataForm';
 import { AdvancedParticleSystem } from '@/components/AdvancedParticleSystem';
 import { GlassCard } from '@/components/ui/glass-card';
@@ -120,7 +120,7 @@ const Index = () => {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <RevolutionaryDashboard 
+            <LazyRevolutionaryDashboard 
               insight={insight} 
               question={question} 
               onNewExploration={handleNewExploration}

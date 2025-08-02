@@ -11,14 +11,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { Download, Share2, Mail, Twitter, Facebook, Linkedin, FileText, Image as ImageIcon } from 'lucide-react';
 
 // Types
-interface FinancialData {
-  income: any[];
-  fixedExpenses: any[];
-  variableExpenses: any[];
-  debts: any[];
-  mood: number;
-  emotionalTags: string[];
-}
+import type { FinancialData, FinancialItem, ChartDataPoint } from '@/types';
 
 // Advanced Trend Chart Component
 export const AdvancedTrendChart = ({ 
@@ -29,8 +22,8 @@ export const AdvancedTrendChart = ({
 }: {
   timeframe: string;
   onTimeframeChange: (value: string) => void;
-  financialData?: any;
-  emotionalData?: any;
+  financialData?: FinancialData;
+  emotionalData?: ChartDataPoint[];
 }) => {
   const [selectedMetric, setSelectedMetric] = useState('balance');
 
@@ -151,8 +144,8 @@ export const InteractiveWhatIfSimulator = ({
   baseData, 
   currentInsight 
 }: {
-  baseData?: any;
-  currentInsight?: any;
+  baseData?: FinancialData;
+  currentInsight?: string;
 }) => {
   const [scenarios, setScenarios] = useState([
     { id: 1, name: 'Augmentation salaire +10%', category: 'income', impact: 320, active: false, probability: 75 },
@@ -537,7 +530,15 @@ export { PredictiveAnalytics } from './PredictiveAnalytics';
 export { GoalTracker } from './GoalTracker';
 export { EmotionalInsightEngine } from './EmotionalInsightEngine';
 
-export const SmartRecommendations = ({ recommendations, emotionalState, healthScore }: any) => (
+export const SmartRecommendations = ({ 
+  recommendations, 
+  emotionalState, 
+  healthScore 
+}: {
+  recommendations: string[];
+  emotionalState: string;
+  healthScore: number;
+}) => (
   <Card className="card-premium">
     <h3 className="text-lg font-semibold text-primary mb-4">💡 Recommandations IA</h3>
     <div className="space-y-3">
@@ -553,7 +554,15 @@ export const SmartRecommendations = ({ recommendations, emotionalState, healthSc
 
 export { FinancialComparator } from './FinancialComparator';
 
-export const ShareAndExport = ({ insight, question, theme }: any) => {
+export const ShareAndExport = ({ 
+  insight, 
+  question, 
+  theme 
+}: {
+  insight: string;
+  question: string;
+  theme: string;
+}) => {
   const handleExportPDF = () => {
     console.log('Export PDF functionality to be implemented');
   };

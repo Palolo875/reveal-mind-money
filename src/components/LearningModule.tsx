@@ -6,8 +6,8 @@ import { Progress } from '@/components/ui/progress';
 import { Lightbulb, BookOpen, Target, TrendingUp } from 'lucide-react';
 
 interface LearningModuleProps {
-  insight?: any;
-  financialData?: any;
+  insight?: string;
+  financialData?: import('@/types').FinancialData;
 }
 
 export const LearningModule = ({ insight, financialData }: LearningModuleProps) => {

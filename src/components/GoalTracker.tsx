@@ -21,7 +21,7 @@ interface Goal {
 }
 
 interface GoalTrackerProps {
-  currentProjections: any;
+  currentProjections: { monthly?: number; yearly?: number; fiveYear?: number; tenYear?: number };
   recommendations: string[];
 }
 

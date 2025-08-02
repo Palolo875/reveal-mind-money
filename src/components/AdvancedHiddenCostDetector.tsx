@@ -1,5 +1,6 @@
 
 import { useState, useEffect } from 'react';
+import { LucideIcon } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -31,7 +32,7 @@ interface HiddenCost {
   frequency: 'monthly' | 'yearly' | 'one-time';
   severity: 'low' | 'medium' | 'high' | 'critical';
   confidence: number;
-  icon: any;
+  icon: LucideIcon;
   solutions: string[];
   potentialSavings: number;
 }
@@ -47,7 +48,7 @@ const HIDDEN_COST_CATEGORIES = {
 };
 
 interface AdvancedHiddenCostDetectorProps {
-  financialData?: any;
+  financialData?: import('@/types').FinancialData;
   emotionalState?: string;
   onCostDetected?: (costs: HiddenCost[]) => void;
 }
@@ -83,7 +84,7 @@ export const AdvancedHiddenCostDetector = ({
     }
 
     // Génération de coûts cachés réalistes basés sur les données
-    const totalExpenses = financialData?.variableExpenses?.reduce((sum: number, expense: any) => sum + expense.amount, 0) || 1500;
+    const totalExpenses = financialData?.variableExpenses?.reduce((sum: number, expense) => sum + expense.amount, 0) || 1500;
     
     const generatedCosts: HiddenCost[] = [
       {
