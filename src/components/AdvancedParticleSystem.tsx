@@ -48,127 +48,87 @@ export const AdvancedParticleSystem = ({
   useEffect(() => {
     if (!preferences.animationsEnabled) return;
 
-    const canvas = canvasRef.current;
-    if (!canvas) return;
+    const containerRef = canvasRef.current?.parentElement;
+    if (!containerRef) return;
 
+    const particles: Particle[] = [];
+    const colors = interactive ? THEME_COLORS : DEFAULT_COLORS;
+
+    // Create particles
+    for (let i = 0; i < count; i++) {
+      particles.push({
+        x: Math.random() * containerRef.offsetWidth,
+        y: Math.random() * containerRef.offsetHeight,
+        vx: (Math.random() - 0.5) * 0.5,
+        vy: (Math.random() - 0.5) * 0.5,
+        radius: Math.random() * 3 + 1,
+        opacity: Math.random() * 0.5 + 0.2,
+        color: colors[Math.floor(Math.random() * colors.length)]
+      });
+    }
+
+    const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    const resizeCanvas = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
+    canvas.width = containerRef.offsetWidth;
+    canvas.height = containerRef.offsetHeight;
+    containerRef.appendChild(canvas);
 
-    const initParticles = () => {
-      // Safely get colors with fallback
-      const colors = THEME_COLORS[theme as keyof typeof THEME_COLORS] || DEFAULT_COLORS;
-      const themeConfig = getThemeConfig(theme);
-      const particleCount = count || themeConfig.particles.count;
-      
-      particlesRef.current = [];
-
-      for (let i = 0; i < particleCount; i++) {
-        particlesRef.current.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-          vx: (Math.random() - 0.5) * 0.5,
-          vy: (Math.random() - 0.5) * 0.5,
-          radius: Math.random() * 2 + 1,
-          opacity: Math.random() * 0.6 + 0.2,
-          color: colors[Math.floor(Math.random() * colors.length)]
-        });
-      }
-    };
+    let animationId: number;
 
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      particlesRef.current.forEach((particle, i) => {
+      particles.forEach(particle => {
         // Update position
         particle.x += particle.vx;
         particle.y += particle.vy;
 
-        // Interactive mouse effect
-        if (interactive) {
-          const dx = mouseRef.current.x - particle.x;
-          const dy = mouseRef.current.y - particle.y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
+        // Bounce off edges
+        if (particle.x <= 0 || particle.x >= canvas.width) particle.vx *= -1;
+        if (particle.y <= 0 || particle.y >= canvas.height) particle.vy *= -1;
 
-          if (distance < 100) {
-            const force = (100 - distance) / 100;
-            particle.vx += dx * force * 0.001;
-            particle.vy += dy * force * 0.001;
-          }
-        }
-
-        // Boundary collision
-        if (particle.x < 0 || particle.x > canvas.width) particle.vx *= -1;
-        if (particle.y < 0 || particle.y > canvas.height) particle.vy *= -1;
-
-        // Contain within bounds
-        particle.x = Math.max(0, Math.min(canvas.width, particle.x));
-        particle.y = Math.max(0, Math.min(canvas.height, particle.y));
-
-        // Draw particle with glow effect
-        ctx.save();
-        ctx.globalAlpha = particle.opacity;
-        
-        // Glow effect
-        ctx.shadowBlur = 10;
-        ctx.shadowColor = particle.color;
-        
-        ctx.fillStyle = particle.color;
+        // Draw particle
         ctx.beginPath();
         ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+        ctx.fillStyle = particle.color;
+        ctx.globalAlpha = particle.opacity;
         ctx.fill();
-        
-        ctx.restore();
 
-        // Constellation lines
+        // Draw connections for constellation mode
         if (constellation) {
-          particlesRef.current.slice(i + 1).forEach(otherParticle => {
-            const dx = particle.x - otherParticle.x;
-            const dy = particle.y - otherParticle.y;
-            const distance = Math.sqrt(dx * dx + dy * dy);
-
-            if (distance < 150) {
-              ctx.save();
-              ctx.globalAlpha = (150 - distance) / 150 * 0.3;
-              ctx.strokeStyle = particle.color;
-              ctx.lineWidth = 0.5;
+          particles.forEach(otherParticle => {
+            const distance = Math.sqrt(
+              Math.pow(particle.x - otherParticle.x, 2) + 
+              Math.pow(particle.y - otherParticle.y, 2)
+            );
+            if (distance < 100 && distance > 0) {
               ctx.beginPath();
               ctx.moveTo(particle.x, particle.y);
               ctx.lineTo(otherParticle.x, otherParticle.y);
+              ctx.strokeStyle = particle.color;
+              ctx.globalAlpha = (100 - distance) / 100 * 0.3;
               ctx.stroke();
-              ctx.restore();
             }
           });
         }
       });
 
-      requestAnimationFrame(animate);
+      animationId = requestAnimationFrame(animate);
     };
 
-    const handleMouseMove = (e: MouseEvent) => {
-      mouseRef.current = { x: e.clientX, y: e.clientY };
-    };
-
-    resizeCanvas();
-    initParticles();
     animate();
 
-    window.addEventListener('resize', resizeCanvas);
-    if (interactive) {
-      window.addEventListener('mousemove', handleMouseMove);
-    }
-
     return () => {
-      window.removeEventListener('resize', resizeCanvas);
-      if (interactive) {
-        window.removeEventListener('mousemove', handleMouseMove);
+      if (animationId) {
+        cancelAnimationFrame(animationId);
+      }
+      if (canvas.parentNode) {
+        canvas.parentNode.removeChild(canvas);
       }
     };
-  }, [theme, count, interactive, constellation, preferences.animationsEnabled]);
+  }, [count, interactive, constellation, DEFAULT_COLORS, THEME_COLORS]);
 
   if (!preferences.animationsEnabled) return null;
 

@@ -1,6 +1,7 @@
 
 import { useState, useCallback } from 'react';
 import { useStore } from '@/store/useStore';
+import { FinancialData, AdvancedInsight } from '@/store/useStore';
 
 interface FinancialItem {
   id: string;
@@ -145,7 +146,7 @@ export const useAdvancedFinancialEngine = () => {
     ));
 
     // Enhanced hidden costs detection with AI
-    const hiddenCosts = [];
+    const hiddenCosts: string[] = [];
     if (totalVariable > totalIncome * 0.35) {
       hiddenCosts.push(`Dépenses variables (${(totalVariable/totalIncome*100).toFixed(1)}%) - potentiel d'optimisation: ${(totalVariable * 0.15).toFixed(0)}€/mois`);
     }
@@ -157,7 +158,7 @@ export const useAdvancedFinancialEngine = () => {
     }
 
     // Advanced recommendations with AI personalization
-    const recommendations = [];
+    const recommendations: string[] = [];
     if (netBalance < 0) {
       recommendations.push(`🎯 Réduction ciblée de ${Math.abs(netBalance * 0.6).toFixed(0)}€ sur les dépenses ${comparison.category}`);
     }

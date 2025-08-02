@@ -33,6 +33,12 @@ export const QuestionInput = ({ onQuestionSubmit }: QuestionInputProps) => {
     setQuestion(sample);
   };
 
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+      handleSubmit();
+    }
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center relative overflow-hidden">
       <ParticleSystem count={30} />
@@ -79,15 +85,28 @@ export const QuestionInput = ({ onQuestionSubmit }: QuestionInputProps) => {
                   setQuestion(e.target.value);
                   setSelectedSample(null);
                 }}
+                onKeyDown={handleKeyPress}
                 className="input-premium min-h-[100px] text-lg resize-none"
+                aria-label="Votre question financière"
+                aria-describedby="question-help"
+                role="textbox"
+                aria-multiline="true"
               />
+              
+              <div id="question-help" className="text-sm text-muted-foreground text-left">
+                💡 Utilisez Ctrl+Entrée (ou Cmd+Entrée sur Mac) pour soumettre rapidement
+              </div>
 
               {/* Sample Questions */}
               <div className="space-y-3">
                 <div className="text-sm text-muted-foreground text-left">
                   💡 Ou choisissez une question d'exemple :
                 </div>
-                <div className="flex flex-wrap gap-2 justify-start">
+                <div 
+                  className="flex flex-wrap gap-2 justify-start"
+                  role="group"
+                  aria-label="Questions d'exemple"
+                >
                   {SAMPLE_QUESTIONS.map((sample, index) => (
                     <Badge
                       key={index}
@@ -98,6 +117,16 @@ export const QuestionInput = ({ onQuestionSubmit }: QuestionInputProps) => {
                           : 'hover:bg-primary/10'
                       }`}
                       onClick={() => selectSample(sample)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          selectSample(sample);
+                        }
+                      }}
+                      tabIndex={0}
+                      role="button"
+                      aria-pressed={selectedSample === sample}
+                      aria-label={`Sélectionner: ${sample}`}
                     >
                       {sample}
                     </Badge>
@@ -109,6 +138,7 @@ export const QuestionInput = ({ onQuestionSubmit }: QuestionInputProps) => {
                 onClick={handleSubmit}
                 disabled={!question.trim()}
                 className="btn-hero w-full py-6 text-lg"
+                aria-label="Commencer l'exploration financière"
               >
                 🚀 Commencer l'exploration
               </Button>
@@ -118,7 +148,7 @@ export const QuestionInput = ({ onQuestionSubmit }: QuestionInputProps) => {
           {/* Features Preview */}
           <div className="grid md:grid-cols-3 gap-6 mt-12 max-w-4xl mx-auto">
             <Card className="card-premium text-center hover-lift">
-              <div className="text-4xl mb-3">🔮</div>
+              <div className="text-4xl mb-3" aria-hidden="true">🔮</div>
               <h3 className="font-semibold text-primary mb-2">Équations Personnelles</h3>
               <p className="text-sm text-muted-foreground">
                 Transformez vos données en révélations visuelles
@@ -126,7 +156,7 @@ export const QuestionInput = ({ onQuestionSubmit }: QuestionInputProps) => {
             </Card>
             
             <Card className="card-premium text-center hover-lift">
-              <div className="text-4xl mb-3">🧠</div>
+              <div className="text-4xl mb-3" aria-hidden="true">🧠</div>
               <h3 className="font-semibold text-primary mb-2">Science Vérifiée</h3>
               <p className="text-sm text-muted-foreground">
                 Basé sur la recherche en neurosciences financières
@@ -134,7 +164,7 @@ export const QuestionInput = ({ onQuestionSubmit }: QuestionInputProps) => {
             </Card>
             
             <Card className="card-premium text-center hover-lift">
-              <div className="text-4xl mb-3">🔒</div>
+              <div className="text-4xl mb-3" aria-hidden="true">🔒</div>
               <h3 className="font-semibold text-primary mb-2">100% Privé</h3>
               <p className="text-sm text-muted-foreground">
                 Vos données restent sur votre appareil

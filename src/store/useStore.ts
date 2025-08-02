@@ -23,11 +23,56 @@ export interface FinancialData {
   timestamp: number;
 }
 
+export interface AdvancedInsight {
+  equation: string;
+  insight: string;
+  comparison: string;
+  emotionalState: string;
+  healthScore: number;
+  recommendations: string[];
+  hiddenCosts: string[];
+  projections: {
+    monthly: number;
+    yearly: number;
+    fiveYear: number;
+    tenYear: number;
+  };
+  emotionalPatterns: {
+    triggers: string[];
+    correlations: { emotion: string; impact: number }[];
+    suggestions: string[];
+  };
+  marketComparisons: {
+    peer: string;
+    deviation: number;
+    ranking: number;
+    percentile: number;
+  };
+  riskAssessment: {
+    level: 'low' | 'medium' | 'high';
+    factors: string[];
+    mitigation: string[];
+    score: number;
+  };
+  behavioralPatterns: {
+    spendingPersonality: string;
+    decisionMaking: string;
+    riskTolerance: string;
+    optimizationPotential: number;
+  };
+  aiPredictions: {
+    nextMonthSpending: number;
+    savingsGoalAchievability: number;
+    emergencyFundNeeded: number;
+    investmentReadiness: number;
+  };
+}
+
 export interface Exploration {
   id: string;
   question: string;
   data: FinancialData;
-  insights: any;
+  insights: AdvancedInsight;
   timestamp: number;
   theme: Theme;
 }
@@ -42,6 +87,32 @@ export interface UserPreferences {
   particleEffects: boolean;
   glassmorphism: boolean;
   autoSave: boolean;
+}
+
+export interface HiddenCost {
+  id: string;
+  name: string;
+  amount: number;
+  category: string;
+  impact: number;
+  description: string;
+}
+
+export interface SimulationResult {
+  id: string;
+  scenario: string;
+  originalData: FinancialData;
+  modifiedData: FinancialData;
+  results: AdvancedInsight;
+  timestamp: number;
+}
+
+export interface ShareLink {
+  id: string;
+  url: string;
+  title: string;
+  description: string;
+  timestamp: number;
 }
 
 interface AppState {
@@ -60,9 +131,9 @@ interface AppState {
   activeTab: string;
   
   // New advanced features
-  hiddenCosts: any[];
-  simulationResults: any[];
-  shareLinks: string[];
+  hiddenCosts: HiddenCost[];
+  simulationResults: SimulationResult[];
+  shareLinks: ShareLink[];
   
   // Actions
   setCurrentExploration: (exploration: Exploration | null) => void;
@@ -73,9 +144,9 @@ interface AppState {
   setTheme: (theme: Theme) => void;
   setSidebarOpen: (open: boolean) => void;
   setActiveTab: (tab: string) => void;
-  addHiddenCosts: (costs: any[]) => void;
-  addSimulationResult: (result: any) => void;
-  addShareLink: (link: string) => void;
+  addHiddenCosts: (costs: HiddenCost[]) => void;
+  addSimulationResult: (result: SimulationResult) => void;
+  addShareLink: (link: ShareLink) => void;
   clearData: () => void;
 }
 
