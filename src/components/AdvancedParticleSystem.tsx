@@ -17,12 +17,14 @@ interface AdvancedParticleSystemProps {
   count?: number;
   interactive?: boolean;
   constellation?: boolean;
+  className?: string;
 }
 
 export const AdvancedParticleSystem = ({ 
   count = 50, 
   interactive = true, 
-  constellation = false 
+  constellation = false,
+  className = ""
 }: AdvancedParticleSystemProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { theme, preferences } = useStore();
@@ -52,7 +54,9 @@ export const AdvancedParticleSystem = ({
     if (!containerRef) return;
 
     const particles: Particle[] = [];
-    const colors = interactive ? THEME_COLORS : DEFAULT_COLORS;
+    // Fix: Ensure colors is always an array
+    const themeColors = THEME_COLORS[theme as keyof typeof THEME_COLORS];
+    const colors = themeColors || DEFAULT_COLORS;
 
     // Create particles
     for (let i = 0; i < count; i++) {
@@ -128,14 +132,14 @@ export const AdvancedParticleSystem = ({
         canvas.parentNode.removeChild(canvas);
       }
     };
-  }, [count, interactive, constellation, DEFAULT_COLORS, THEME_COLORS]);
+  }, [count, interactive, constellation, theme, preferences.animationsEnabled]);
 
   if (!preferences.animationsEnabled) return null;
 
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 pointer-events-none z-0"
+      className={`fixed inset-0 pointer-events-none z-0 ${className}`}
       style={{ opacity: 0.6 }}
     />
   );

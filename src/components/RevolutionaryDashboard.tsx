@@ -419,7 +419,7 @@ export const RevolutionaryDashboard = ({
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.2 * (index + 1) }}
                       >
-                        <GlassCard variant="floating" className="p-6 text-center group hover:scale-105 transition-all">
+                        <GlassCard variant="premium" className="p-6 text-center group hover:scale-105 transition-all">
                           <div className="text-sm text-muted-foreground mb-2">{projection.label}</div>
                           <div className={`text-4xl font-bold bg-gradient-to-r ${projection.color} bg-clip-text text-transparent`}>
                             {projection.value >= 0 ? '+' : ''}{Math.round(projection.value).toLocaleString()}€

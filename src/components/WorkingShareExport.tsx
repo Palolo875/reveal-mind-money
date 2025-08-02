@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Card } from '@/components/ui/card';
@@ -5,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { useStore } from '@/store/useStore';
 import { 
   Share, 
   Download, 
@@ -96,7 +98,9 @@ export const WorkingShareExport = ({
   const [isSharing, setIsSharing] = useState(false);
   const [shareUrl, setShareUrl] = useState('');
   const [copied, setCopied] = useState(false);
+  const { addShareLink } = useStore();
 
+  // Fix: Encode to Base64 with proper UTF-8 handling
   const generateShareUrl = () => {
     const data = {
       title,
@@ -109,8 +113,13 @@ export const WorkingShareExport = ({
       timestamp: new Date().toISOString()
     };
     
-    const encoded = btoa(JSON.stringify(data));
-    return `${window.location.origin}/share/${encoded}`;
+    // Convert to UTF-8 bytes first, then encode to base64
+    const jsonString = JSON.stringify(data);
+    const encoder = new TextEncoder();
+    const bytes = encoder.encode(jsonString);
+    const base64 = btoa(String.fromCharCode(...bytes));
+    
+    return `${window.location.origin}/share/${base64}`;
   };
 
   const handleExport = async (format: ExportFormat) => {
@@ -216,6 +225,15 @@ Balance,${insight.projections.monthly},Balance Mensuelle`;
     
     const url = generateShareUrl();
     setShareUrl(url);
+    
+    // Save share link to store
+    addShareLink({
+      id: Date.now().toString(),
+      url,
+      title,
+      description,
+      timestamp: Date.now()
+    });
     
     const text = `Découvrez mon insight financier avec Rivela ! ${title}`;
     
