@@ -1,13 +1,13 @@
 
 import { useState, useEffect } from 'react';
-import { QuestionInput } from '@/components/QuestionInput';
-import { FinancialDataForm } from '@/components/FinancialDataForm';
-import { RevolutionaryDashboard } from '@/components/RevolutionaryDashboard';
-import { AdvancedParticleSystem } from '@/components/AdvancedParticleSystem';
-import { ThemeSystem } from '@/components/ThemeSystem';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useStore } from '@/store/useStore';
 import { useAdvancedFinancialEngine } from '@/hooks/useAdvancedFinancialEngine';
 import { useSoundSystem } from '@/hooks/useSoundSystem';
+import { ConversationalInterface } from '@/components/ConversationalInterface';
+import { LivingDataDashboard } from '@/components/LivingDataDashboard';
+import { FinancialDataForm } from '@/components/FinancialDataForm';
+import { AdvancedParticleSystem } from '@/components/AdvancedParticleSystem';
 import { GlassCard } from '@/components/ui/glass-card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
@@ -105,8 +105,6 @@ const Index = () => {
 
   return (
     <>
-      <ThemeSystem />
-      
       <AnimatePresence mode="wait">
         {currentStep === 'question' && (
           <motion.div
@@ -116,7 +114,7 @@ const Index = () => {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <QuestionInput onQuestionSubmit={handleQuestionSubmit} />
+            <ConversationalInterface onQuestionSubmit={handleQuestionSubmit} />
           </motion.div>
         )}
 
@@ -128,7 +126,7 @@ const Index = () => {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <RevolutionaryDashboard 
+            <LivingDataDashboard 
               insight={insight} 
               question={question} 
               onNewExploration={handleNewExploration}

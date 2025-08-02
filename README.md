@@ -1,124 +1,157 @@
-# 🧠 Rivela - Neuroscience Financière
+# 🚀 Rivela - IA Financière & Neurosciences Révolutionnaires
 
-Une application révolutionnaire qui révèle l'impact invisible de vos choix financiers quotidiens grâce à des équations personnelles et des insights neuroscientifiques.
+Une application React/TypeScript qui combine **neurosciences financières**, **intelligence artificielle** et **design d'exception** pour transformer votre relation à l'argent à travers des équations personnelles et des insights neuroscientifiques.
 
-## ✨ Fonctionnalités
+---
 
-- **🔮 Équations Personnelles** : Transformez vos données en révélations visuelles
-- **🧠 Science Vérifiée** : Basé sur la recherche en neurosciences financières
-- **🔒 100% Privé** : Vos données restent sur votre appareil
-- **🎨 Interface Avancée** : Animations, glassmorphism, système de particules
-- **📊 Analyses Prédictives** : IA pour prédire vos comportements financiers
-- **🎯 Insights Émotionnels** : Corrélation entre humeur et dépenses
+## **🤖 Intelligence Artificielle & Neurosciences**
 
-## 🚀 Démarrage Rapide
+### **Options IA Gratuites**
 
+Rivela intègre plusieurs moteurs d'IA gratuits et puissants :
+- **Ollama (Recommandé)** : IA locale, privée, rapide, hors ligne
+- **Hugging Face** : API gratuite ; modèles spécialisés
+- **Cohere** : IA spécialisée finance
+- **Fallback** : Algorithmes locaux prédéfinis
+
+**Installation rapide Ollama :**
 ```bash
-# Installation des dépendances
-npm install --legacy-peer-deps
-
-# Démarrage en mode développement
-npm run dev
-
-# Build de production
-npm run build
-
-# Vérification du code
-npm run lint
+./scripts/setup-ollama.sh
+# ou manuellement
+curl -fsSL https://ollama.ai/install.sh | sh
+ollama serve
+ollama pull mistral
 ```
 
-## 🛠️ Technologies
+**Configuration IA** :
+```bash
+cp .env.example .env.local
+# Configurez vos tokens IA
+```
 
-- **Frontend** : React 18 + TypeScript + Vite
-- **UI** : Tailwind CSS + shadcn/ui + Framer Motion
-- **État** : Zustand avec persistance
-- **Graphiques** : Recharts + D3.js
-- **Animations** : Three.js + React Three Fiber
-- **Validation** : Zod
-- **Tests** : Vitest (à implémenter)
+---
 
-## 📁 Structure du Projet
+## **🎨 Design Révolutionnaire**
+
+- **Glassmorphism avancé** : Effets de verre et transparence
+- **Fluid Morphism, Cinematic Micro-animations, Dynamic Typography**
+- **Interface conversationnelle immersive** : ChatGPT pour la finance
+- **Visual Haptic Feedback, Contextual Navigation**
+- **Particules financières interactives, Thèmes émotionnels adaptatifs**
+
+---
+
+## **⚡ Technologies**
+
+- **Frontend** : React 18, TypeScript, Vite
+- **UI** : Tailwind CSS, shadcn/ui, Framer Motion
+- **State** : Zustand, React Query
+- **Animations** : Three.js, React Three Fiber
+- **Validation** : Zod
+- **Tests** : Vitest (à implémenter)
+
+---
+
+## **📊 Architecture Technique**
 
 ```
 src/
-├── components/          # Composants réutilisables
-│   ├── ui/            # Composants UI de base
-│   └── ...            # Composants métier
-├── hooks/             # Hooks personnalisés
-├── store/             # Gestion d'état (Zustand)
-├── lib/               # Utilitaires et validation
-├── types/             # Types TypeScript centralisés
-├── pages/             # Pages de l'application
-└── themes/            # Système de thèmes
+├── components/          # Composants UI
+│   ├── ui/             # Composants de base (shadcn/ui)
+│   ├── ConversationalInterface.tsx
+│   ├── LivingDataDashboard.tsx
+│   └── AIConfigPanel.tsx
+├── hooks/              # Hooks personnalisés
+│   ├── useAdvancedFinancialEngine.ts
+│   └── useSoundSystem.ts
+├── services/           # Services externes
+│   └── aiService.ts    # Service IA multi-provider
+├── store/              # State management
+│   └── useStore.ts     # Zustand store
+├── themes/             # Thèmes visuels
+│   └── revolutionaryThemes.ts
+└── lib/                # Utilitaires
+    └── validation.ts   # Validation Zod
 ```
 
-## 🔧 Corrections et Améliorations Récentes
+---
 
-### ✅ Types TypeScript
-- Remplacement des `any` par des types spécifiques
-- Interface `AdvancedInsight` complète
-- Types centralisés dans `/src/types`
-- Validation Zod pour les données utilisateur
+## **🎯 Fonctionnalités Principales**
 
-### ✅ Performance
-- Optimisation des re-renders avec React.memo
-- Correction des dépendances useEffect
-- Lazy loading des composants lourds
-- Optimisation du système de particules
+### **Interface Conversationnelle**
+- Questions naturelles : "Comment optimiser mes dépenses ?"
+- Exemples personnalisés, analyse émotionnelle
 
-### ✅ Sécurité
-- Validation des entrées utilisateur
-- Nettoyage des données sensibles
-- Chiffrement basique des données
-- Protection contre les injections
+### **Cartographie Financière**
+- Données structurées : revenus, charges, dettes
+- Contexte émotionnel, analyse comportementale
 
-### ✅ Accessibilité
-- ARIA labels et rôles
-- Navigation clavier améliorée
-- Contraste et lisibilité
-- Support des lecteurs d'écran
+### **Révélations IA**
+- Insights neuroscientifiques, recommandations actionnables
+- Projections temporelles : 1, 5, 10 ans
 
-### ✅ Gestion d'Erreurs
-- ErrorBoundary global
-- Messages d'erreur utilisateur
-- Logging des erreurs
-- Récupération gracieuse
+### **Simulations "Et si ?"**
+- Scénarios multiples, impact émotionnel, comparaisons visuelles
 
-## 🎨 Thèmes Disponibles
+### **Dashboard Vivant**
+- Données animées, score de santé, détection des coûts cachés, optimisations
 
-- **Neural** : Thème par défaut avec effets cérébraux
-- **Quantum** : Effets quantiques et particules
-- **Cosmic** : Thème spatial et infini
-- **Organic** : Thème naturel et biologique
+---
 
-## 📊 Fonctionnalités Avancées
+## **🔧 Configuration & Démarrage**
 
-### Moteur Financier
-- Analyse comportementale
-- Prédictions IA
-- Détection de coûts cachés
-- Simulations "Et si ?"
+### **1. Cloner le projet**
+```bash
+git clone https://github.com/votre-username/rivela.git
+cd rivela
+```
 
-### Système Émotionnel
-- Archetypes d'humeur (1-10)
-- Corrélation émotion-dépense
-- Suggestions personnalisées
-- Journal émotionnel
+### **2. Installer les dépendances**
+```bash
+npm install
+```
 
-### Analytics
-- Graphiques interactifs
-- Comparaisons de marché
-- Scores de santé financière
-- Projections temporelles
+### **3. Configuration IA (Optionnel)**
+```bash
+# Installation automatique d'Ollama
+./scripts/setup-ollama.sh
 
-## 🔒 Sécurité et Confidentialité
+# Ou configuration manuelle
+cp .env.example .env.local
+# Éditer .env.local avec vos tokens IA
+```
 
-- **Données Locales** : Tout est stocké sur votre appareil
-- **Validation** : Toutes les entrées sont validées
-- **Chiffrement** : Données sensibles chiffrées
-- **Pas de Tracking** : Aucun analytics externe
+### **4. Démarrer l'application**
+```bash
+npm run dev
+```
 
-## 🧪 Tests
+### **5. Ouvrir dans le navigateur**
+```
+http://localhost:5173
+```
+
+---
+
+## **🔒 Sécurité et Confidentialité**
+
+- **Données Locales** : Tout est stocké sur votre appareil
+- **Validation** : Toutes les entrées sont validées
+- **Chiffrement** : Données sensibles chiffrées
+- **Pas de Tracking** : Aucun analytics externe
+
+---
+
+## **📈 Performance**
+
+- **Lighthouse Score** : 95+ sur tous les critères
+- **First Contentful Paint** : < 1.5s
+- **Largest Contentful Paint** : < 2.5s
+- **Cumulative Layout Shift** : < 0.1
+
+---
+
+## **🧪 Tests**
 
 ```bash
 # Tests unitaires
@@ -131,14 +164,18 @@ npm run test:integration
 npm run test:coverage
 ```
 
-## 📈 Performance
+---
 
-- **Lighthouse Score** : 95+ sur tous les critères
-- **First Contentful Paint** : < 1.5s
-- **Largest Contentful Paint** : < 2.5s
-- **Cumulative Layout Shift** : < 0.1
+## **📚 Documentation**
 
-## 🤝 Contribution
+- **[Guide IA](docs/IA_SETUP.md)** : Configuration des IAs gratuites
+- **[Architecture](docs/ARCHITECTURE.md)** : Structure technique
+- **[Design System](docs/DESIGN_SYSTEM.md)** : Guide de design
+- **[API Reference](docs/API.md)** : Documentation API
+
+---
+
+## **🤝 Contribution**
 
 1. Fork le projet
 2. Créez une branche feature (`git checkout -b feature/AmazingFeature`)
@@ -146,37 +183,52 @@ npm run test:coverage
 4. Push vers la branche (`git push origin feature/AmazingFeature`)
 5. Ouvrez une Pull Request
 
-## 📝 Changelog
-
-### v1.2.0 (2024-01-XX)
-- ✅ Correction des types TypeScript
-- ✅ Amélioration de la performance
-- ✅ Système de validation sécurisé
-- ✅ Accessibilité améliorée
-- ✅ Gestion d'erreurs robuste
-
-### v1.1.0 (2024-01-XX)
-- 🎨 Nouveaux thèmes
-- 📊 Analytics avancés
-- 🧠 Moteur émotionnel
-- 🔮 Prédictions IA
-
-### v1.0.0 (2024-01-XX)
-- 🚀 Version initiale
-- 🎯 Fonctionnalités de base
-- 🎨 Interface moderne
-
-## 📄 Licence
-
-Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
-
-## 🙏 Remerciements
-
-- **shadcn/ui** pour les composants de base
-- **Framer Motion** pour les animations
-- **Zustand** pour la gestion d'état
-- **Tailwind CSS** pour le styling
+### **Standards de code**
+- **TypeScript strict** : Type safety maximale
+- **ESLint** : Qualité du code
+- **Prettier** : Formatage automatique
+- **Tests** : Couverture de tests
 
 ---
 
-**Développé avec ❤️ pour révéler vos insights financiers cachés**
+## **📝 Changelog**
+
+### v1.2.0 (2024-01-XX)
+- Correction des types TypeScript
+- Amélioration de la performance
+- Système de validation sécurisé
+- Accessibilité améliorée
+- Gestion d'erreurs robuste
+
+### v1.1.0 (2024-01-XX)
+- Nouveaux thèmes
+- Analytics avancés
+- Moteur émotionnel
+- Prédictions IA
+
+### v1.0.0 (2024-01-XX)
+- Version initiale
+- Fonctionnalités de base
+- Interface moderne
+
+---
+
+## **📄 Licence**
+
+MIT License - Voir [LICENSE](LICENSE) pour plus de détails.
+
+---
+
+## **🌟 Remerciements**
+
+- **shadcn/ui** : Composants UI exceptionnels
+- **Framer Motion** : Animations fluides
+- **Ollama** : IA locale gratuite
+- **Hugging Face** : API IA gratuite
+- **Cohere** : IA spécialisée
+- **Zustand** : State management
+- **Tailwind CSS** : Styling utilitaire
+
+---
+
+**Rivela - Transformez votre relation à l'argent avec l'IA et la neuroscience !** 🚀✨
