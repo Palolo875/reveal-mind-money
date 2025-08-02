@@ -1,8 +1,8 @@
-
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
+import { REVOLUTIONARY_THEMES, ThemeName } from '@/themes/revolutionaryThemes';
 
-export type Theme = 'aurora' | 'sunset' | 'ocean' | 'forest' | 'galaxy';
+export type Theme = ThemeName;
 
 export interface FinancialItem {
   id: string;
@@ -39,6 +39,9 @@ export interface UserPreferences {
   privacyMode: boolean;
   language: string;
   currency: string;
+  particleEffects: boolean;
+  glassmorphism: boolean;
+  autoSave: boolean;
 }
 
 interface AppState {
@@ -56,6 +59,11 @@ interface AppState {
   sidebarOpen: boolean;
   activeTab: string;
   
+  // New advanced features
+  hiddenCosts: any[];
+  simulationResults: any[];
+  shareLinks: string[];
+  
   // Actions
   setCurrentExploration: (exploration: Exploration | null) => void;
   setCurrentStep: (step: 'question' | 'data' | 'revelation') => void;
@@ -65,6 +73,9 @@ interface AppState {
   setTheme: (theme: Theme) => void;
   setSidebarOpen: (open: boolean) => void;
   setActiveTab: (tab: string) => void;
+  addHiddenCosts: (costs: any[]) => void;
+  addSimulationResult: (result: any) => void;
+  addShareLink: (link: string) => void;
   clearData: () => void;
 }
 
@@ -77,16 +88,22 @@ export const useStore = create<AppState>()(
       isAnalyzing: false,
       explorations: [],
       preferences: {
-        theme: 'aurora',
+        theme: 'neural',
         soundEnabled: true,
         animationsEnabled: true,
         privacyMode: false,
         language: 'fr',
-        currency: 'EUR'
+        currency: 'EUR',
+        particleEffects: true,
+        glassmorphism: true,
+        autoSave: true
       },
-      theme: 'aurora',
+      theme: 'neural',
       sidebarOpen: false,
       activeTab: 'revelation',
+      hiddenCosts: [],
+      simulationResults: [],
+      shareLinks: [],
       
       // Actions
       setCurrentExploration: (exploration) => set({ currentExploration: exploration }),
@@ -103,25 +120,56 @@ export const useStore = create<AppState>()(
       
       setTheme: (theme) => {
         set({ theme });
+        // Apply revolutionary theme
+        const themeConfig = REVOLUTIONARY_THEMES[theme];
+        const root = document.documentElement;
+        
+        root.style.setProperty('--theme-primary', themeConfig.primary);
+        root.style.setProperty('--theme-secondary', themeConfig.secondary);
+        root.style.setProperty('--theme-accent', themeConfig.accent);
+        root.style.setProperty('--theme-background', themeConfig.background);
+        root.style.setProperty('--theme-surface', themeConfig.surface);
+        root.style.setProperty('--theme-glass', themeConfig.glass);
+        root.style.setProperty('--theme-glow', themeConfig.glow);
+        root.style.setProperty('--theme-gradient', themeConfig.gradient);
+        
         document.body.className = `theme-${theme}`;
       },
       
       setSidebarOpen: (open) => set({ sidebarOpen: open }),
       setActiveTab: (tab) => set({ activeTab: tab }),
       
+      addHiddenCosts: (costs) => set((state) => ({
+        hiddenCosts: [...state.hiddenCosts, ...costs]
+      })),
+      
+      addSimulationResult: (result) => set((state) => ({
+        simulationResults: [result, ...state.simulationResults.slice(0, 19)] // Keep last 20
+      })),
+      
+      addShareLink: (link) => set((state) => ({
+        shareLinks: [link, ...state.shareLinks.slice(0, 9)] // Keep last 10
+      })),
+      
       clearData: () => set({
         currentExploration: null,
         currentStep: 'question',
-        explorations: []
+        explorations: [],
+        hiddenCosts: [],
+        simulationResults: [],
+        shareLinks: []
       })
     }),
     {
-      name: 'rivela-store',
+      name: 'rivela-revolutionary-store',
       storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({
         explorations: state.explorations,
         preferences: state.preferences,
-        theme: state.theme
+        theme: state.theme,
+        hiddenCosts: state.hiddenCosts,
+        simulationResults: state.simulationResults,
+        shareLinks: state.shareLinks
       })
     }
   )

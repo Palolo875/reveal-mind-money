@@ -15,6 +15,10 @@ import { FinancialComparator } from '@/components/FinancialComparator';
 import { LearningModule } from '@/components/LearningModule';
 import { PredictionsModule } from '@/components/PredictionsModule';
 import { EmotionalModule } from '@/components/EmotionalModule';
+import { AdvancedSimulator } from '@/components/AdvancedSimulator';
+import { AdvancedHiddenCostDetector } from '@/components/AdvancedHiddenCostDetector';
+import { AdvancedShareExport } from '@/components/AdvancedShareExport';
+import { RevolutionaryThemeSelector } from '@/components/RevolutionaryThemeSelector';
 import { 
   Brain, 
   Zap, 
@@ -27,7 +31,12 @@ import {
   Settings,
   Sparkles,
   Eye,
-  Lightbulb
+  Lightbulb,
+  AlertTriangle,
+  Calculator,
+  BarChart3,
+  Palette,
+  Shield
 } from 'lucide-react';
 
 interface RevolutionaryDashboardProps {
@@ -142,7 +151,7 @@ export const RevolutionaryDashboard = ({
   onNewExploration,
   financialData 
 }: RevolutionaryDashboardProps) => {
-  const { theme, activeTab, setActiveTab } = useStore();
+  const { theme, activeTab, setActiveTab, addHiddenCosts, addSimulationResult, addShareLink } = useStore();
   const { playSound, playHaptic } = useSoundSystemFallback();
   const [isRevealing, setIsRevealing] = useState(true);
   const [revealProgress, setRevealProgress] = useState(0);
@@ -173,16 +182,18 @@ export const RevolutionaryDashboard = ({
     { id: 'revelation', label: 'Révélation', icon: Sparkles, color: 'from-primary to-secondary' },
     { id: 'insights', label: 'Insights IA', icon: Brain, color: 'from-secondary to-accent' },
     { id: 'predictions', label: 'Prédictions', icon: Eye, color: 'from-accent to-primary' },
-    { id: 'simulations', label: 'Simulations', icon: Target, color: 'from-primary to-accent' },
+    { id: 'simulations', label: 'Simulations', icon: Calculator, color: 'from-primary to-accent' },
+    { id: 'detective', label: 'Détective', icon: AlertTriangle, color: 'from-secondary to-primary' },
     { id: 'optimization', label: 'Optimisation', icon: Zap, color: 'from-secondary to-primary' },
     { id: 'social', label: 'Comparaisons', icon: Users, color: 'from-accent to-secondary' },
     { id: 'emotional', label: 'Émotionnel', icon: Heart, color: 'from-primary to-secondary' },
-    { id: 'learning', label: 'Apprentissage', icon: Lightbulb, color: 'from-secondary to-accent' }
+    { id: 'learning', label: 'Apprentissage', icon: Lightbulb, color: 'from-secondary to-accent' },
+    { id: 'share', label: 'Partage', icon: Share, color: 'from-primary to-accent' }
   ];
 
   return (
     <div className="min-h-screen relative overflow-hidden">
-      <AdvancedParticleSystem count={60} interactive constellation />
+      <AdvancedParticleSystem count={80} interactive constellation />
       
       {/* Revolutionary Header */}
       <motion.div 
@@ -254,6 +265,8 @@ export const RevolutionaryDashboard = ({
               animate={{ opacity: 1, x: 0 }}
               className="flex flex-col sm:flex-row gap-3"
             >
+              <RevolutionaryThemeSelector />
+              
               <Button 
                 variant="outline" 
                 onClick={() => {
@@ -278,7 +291,7 @@ export const RevolutionaryDashboard = ({
       {/* Revolutionary Tab System */}
       <div className="relative z-10 px-6">
         <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
-          <TabsList className="grid grid-cols-4 lg:grid-cols-8 gap-2 bg-transparent p-2 h-auto">
+          <TabsList className="grid grid-cols-5 lg:grid-cols-10 gap-2 bg-transparent p-2 h-auto">
             {tabs.map((tab) => {
               const Icon = tab.icon;
               return (
@@ -375,7 +388,11 @@ export const RevolutionaryDashboard = ({
                 </TabsContent>
 
                 <TabsContent value="insights">
-                  <SimpleAdvancedTrendChart financialData={financialData} />
+                  <PredictiveAnalytics 
+                    insight={insight}
+                    financialData={financialData}
+                    timeframe="6months"
+                  />
                 </TabsContent>
 
                 <TabsContent value="predictions">
@@ -383,11 +400,68 @@ export const RevolutionaryDashboard = ({
                 </TabsContent>
 
                 <TabsContent value="simulations">
-                  <SimpleWhatIfSimulator financialData={financialData} />
+                  <AdvancedSimulator 
+                    currentInsight={insight}
+                    onSimulationResult={(result) => {
+                      addSimulationResult(result);
+                      playSound('success');
+                    }}
+                  />
+                </TabsContent>
+
+                <TabsContent value="detective">
+                  <AdvancedHiddenCostDetector 
+                    financialData={financialData}
+                    emotionalState={insight?.emotionalState}
+                    onCostDetected={(costs) => {
+                      addHiddenCosts(costs);
+                      playSound('reveal');
+                    }}
+                  />
                 </TabsContent>
 
                 <TabsContent value="optimization">
-                  <SimpleOptimizationModule insight={insight} />
+                  <GlassCard variant="premium" className="p-8">
+                    <h3 className="text-2xl font-bold mb-6 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                      ⚡ Optimisation Intelligente
+                    </h3>
+                    <div className="space-y-6">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="p-4 bg-success/10 rounded-lg border border-success/20">
+                          <h4 className="font-semibold text-success mb-2">💰 Potentiel d'économie</h4>
+                          <div className="text-2xl font-bold text-success">
+                            {Math.round((insight?.projections?.monthly || 0) * 0.2)}€/mois
+                          </div>
+                          <p className="text-sm text-muted-foreground mt-2">
+                            Optimisation automatique détectée
+                          </p>
+                        </div>
+                        
+                        <div className="p-4 bg-primary/10 rounded-lg border border-primary/20">
+                          <h4 className="font-semibold text-primary mb-2">🎯 Score d'efficacité</h4>
+                          <div className="text-2xl font-bold text-primary">
+                            {insight?.healthScore || 85}/100
+                          </div>
+                          <Progress value={insight?.healthScore || 85} className="mt-2 h-2" />
+                        </div>
+                      </div>
+
+                      <div className="space-y-3">
+                        <h4 className="font-semibold">🔧 Actions d'optimisation recommandées :</h4>
+                        <div className="space-y-2">
+                          <div className="p-3 bg-muted/20 rounded-lg">
+                            <span className="font-medium">1.</span> Renégocier vos abonnements (-15€/mois)
+                          </div>
+                          <div className="p-3 bg-muted/20 rounded-lg">
+                            <span className="font-medium">2.</span> Automatiser votre épargne (+200€/mois)
+                          </div>
+                          <div className="p-3 bg-muted/20 rounded-lg">
+                            <span className="font-medium">3.</span> Optimiser vos dépenses transport (-45€/mois)
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </GlassCard>
                 </TabsContent>
 
                 <TabsContent value="social">
@@ -403,6 +477,19 @@ export const RevolutionaryDashboard = ({
 
                 <TabsContent value="learning">
                   <LearningModule insight={insight} financialData={financialData} />
+                </TabsContent>
+
+                <TabsContent value="share">
+                  <AdvancedShareExport 
+                    insight={insight}
+                    financialData={financialData}
+                    onExportComplete={(format, data) => {
+                      playSound('success');
+                      if (format === 'link') {
+                        addShareLink(data.url);
+                      }
+                    }}
+                  />
                 </TabsContent>
               </motion.div>
             )}
