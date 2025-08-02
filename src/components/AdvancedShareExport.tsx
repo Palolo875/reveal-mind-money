@@ -11,7 +11,7 @@ import { useStore } from '@/store/useStore';
 import { 
   Share2, Download, Mail, MessageSquare, Calendar, Clock, 
   Shield, Eye, EyeOff, Copy, Check, QrCode, FileText,
-  Table, PresentationChart, Code, Twitter, Facebook,
+  Table, Presentation, Code, Twitter, Facebook,
   Linkedin, Camera, Printer, Bell
 } from 'lucide-react';
 
@@ -20,9 +20,10 @@ interface ShareExportProps {
   description: string;
   financialData: any;
   insight: any;
+  onExportComplete?: (format: string, data: any) => void;
 }
 
-export const AdvancedShareExport = ({ title, description, financialData, insight }: ShareExportProps) => {
+export const AdvancedShareExport = ({ title, description, financialData, insight, onExportComplete }: ShareExportProps) => {
   const [isShareOpen, setIsShareOpen] = useState(false);
   const [isExportOpen, setIsExportOpen] = useState(false);
   const [isProtected, setIsProtected] = useState(false);
@@ -51,6 +52,18 @@ export const AdvancedShareExport = ({ title, description, financialData, insight
 
   const handleExport = (format: string) => {
     console.log(`Exporting in ${format} format...`);
+    const exportData = {
+      title,
+      description,
+      financialData,
+      insight,
+      timestamp: new Date().toISOString()
+    };
+    
+    if (onExportComplete) {
+      onExportComplete(format, exportData);
+    }
+    
     setIsExportOpen(false);
   };
 
@@ -262,7 +275,7 @@ export const AdvancedShareExport = ({ title, description, financialData, insight
                       CSV
                     </TabsTrigger>
                     <TabsTrigger value="presentation">
-                      <PresentationChart className="w-4 h-4 mr-2" />
+                      <Presentation className="w-4 h-4 mr-2" />
                       Présentation
                     </TabsTrigger>
                     <TabsTrigger value="code">
