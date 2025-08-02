@@ -1,8 +1,10 @@
 
 import { useEffect } from 'react';
 import { useStore } from '@/store/useStore';
+import { REVOLUTIONARY_THEMES } from '@/themes/revolutionaryThemes';
 
-const THEME_CONFIGS = {
+// Legacy theme configurations for backward compatibility
+const LEGACY_THEME_CONFIGS = {
   aurora: {
     primary: 'hsl(210, 100%, 56%)',
     secondary: 'hsl(300, 70%, 60%)',
@@ -44,14 +46,38 @@ export const ThemeSystem = () => {
   const { theme } = useStore();
 
   useEffect(() => {
-    const config = THEME_CONFIGS[theme];
+    // Try revolutionary themes first
+    let config = REVOLUTIONARY_THEMES[theme as keyof typeof REVOLUTIONARY_THEMES];
+    
+    // Fallback to legacy themes if revolutionary theme not found
+    if (!config) {
+      config = LEGACY_THEME_CONFIGS[theme as keyof typeof LEGACY_THEME_CONFIGS];
+    }
+    
+    // Final fallback to neural theme
+    if (!config) {
+      config = REVOLUTIONARY_THEMES.neural;
+    }
+    
     const root = document.documentElement;
     
-    // Apply CSS custom properties
-    root.style.setProperty('--theme-primary', config.primary);
-    root.style.setProperty('--theme-secondary', config.secondary);
-    root.style.setProperty('--theme-accent', config.accent);
-    root.style.setProperty('--theme-gradient', config.gradient);
+    // Apply CSS custom properties for revolutionary themes
+    if ('background' in config) {
+      root.style.setProperty('--theme-primary', config.primary);
+      root.style.setProperty('--theme-secondary', config.secondary);
+      root.style.setProperty('--theme-accent', config.accent);
+      root.style.setProperty('--theme-background', config.background);
+      root.style.setProperty('--theme-surface', config.surface);
+      root.style.setProperty('--theme-glass', config.glass);
+      root.style.setProperty('--theme-glow', config.glow);
+      root.style.setProperty('--theme-gradient', config.gradient);
+    } else {
+      // Legacy theme support
+      root.style.setProperty('--theme-primary', config.primary);
+      root.style.setProperty('--theme-secondary', config.secondary);
+      root.style.setProperty('--theme-accent', config.accent);
+      root.style.setProperty('--theme-gradient', config.gradient);
+    }
     
     // Update body class
     document.body.className = `theme-${theme}`;
@@ -62,5 +88,14 @@ export const ThemeSystem = () => {
 };
 
 export const getThemeConfig = (theme: string) => {
-  return THEME_CONFIGS[theme as keyof typeof THEME_CONFIGS] || THEME_CONFIGS.aurora;
+  // Try revolutionary themes first
+  let config = REVOLUTIONARY_THEMES[theme as keyof typeof REVOLUTIONARY_THEMES];
+  
+  // Fallback to legacy themes
+  if (!config) {
+    config = LEGACY_THEME_CONFIGS[theme as keyof typeof LEGACY_THEME_CONFIGS];
+  }
+  
+  // Final fallback
+  return config || REVOLUTIONARY_THEMES.neural;
 };
