@@ -1,5 +1,6 @@
 
 import { useState, useEffect } from 'react';
+import { LucideIcon } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -28,7 +29,7 @@ import {
 interface SimulationScenario {
   id: string;
   name: string;
-  icon: any;
+  icon: LucideIcon;
   category: string;
   defaultImpact: number;
   description: string;
@@ -98,15 +99,30 @@ const SIMULATION_SCENARIOS: SimulationScenario[] = [
 ];
 
 interface AdvancedSimulatorProps {
-  currentInsight?: any;
-  onSimulationResult?: (result: any) => void;
+  currentInsight?: string;
+  onSimulationResult?: (result: SimulationResult) => void;
+}
+
+interface SimulationResult {
+  scenario: string;
+  impact: number;
+  projections: Array<{
+    period: string;
+    balance: number;
+    growth: number;
+  }>;
+  analysis: {
+    recommendation: string;
+    risk: 'low' | 'medium' | 'high';
+    confidence: number;
+  };
 }
 
 export const AdvancedSimulator = ({ currentInsight, onSimulationResult }: AdvancedSimulatorProps) => {
   const [activeScenario, setActiveScenario] = useState<string | null>(null);
   const [customScenarios, setCustomScenarios] = useState<SimulationScenario[]>([]);
   const [simulationParams, setSimulationParams] = useState<Record<string, number>>({});
-  const [results, setResults] = useState<any>(null);
+  const [results, setResults] = useState<SimulationResult | null>(null);
   const [isSimulating, setIsSimulating] = useState(false);
 
   const runSimulation = async (scenario: SimulationScenario, amount: number) => {
@@ -123,8 +139,8 @@ export const AdvancedSimulator = ({ currentInsight, onSimulationResult }: Advanc
     const timeHorizon = [1, 3, 5, 10]; // années
     
     const projections = timeHorizon.map(years => {
-      let incomeChange = (scenario.impacts.income || 0) * amount * 0.1;
-      let expenseChange = (scenario.impacts.expenses || 0) * amount / years;
+          const incomeChange = (scenario.impacts.income || 0) * amount * 0.1;
+    const expenseChange = (scenario.impacts.expenses || 0) * amount / years;
       
       const newMonthly = (baseIncome + incomeChange) - (baseExpenses + expenseChange);
       return {
@@ -299,7 +315,7 @@ export const AdvancedSimulator = ({ currentInsight, onSimulationResult }: Advanc
                             <h5 className="text-lg font-semibold text-primary">📊 Résultats de simulation</h5>
                             
                             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                              {results.projections.map((proj: any, index: number) => (
+                              {results.projections.map((proj, index: number) => (
                                 <Card key={index} className="p-3 text-center">
                                   <div className="text-xs text-muted-foreground">{proj.years} an{proj.years > 1 ? 's' : ''}</div>
                                   <div className={`text-lg font-bold ${proj.monthly >= 0 ? 'text-success' : 'text-danger'}`}>

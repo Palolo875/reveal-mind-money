@@ -5,8 +5,8 @@ import { Progress } from '@/components/ui/progress';
 import { Heart, Brain, Zap, AlertCircle } from 'lucide-react';
 
 interface EmotionalModuleProps {
-  insight?: any;
-  financialData?: any;
+  insight?: { emotionalPatterns?: { triggers: string[]; correlations: Array<{ emotion: string; impact: number }>; suggestions: string[] } };
+  financialData?: import('@/types').FinancialData;
 }
 
 export const EmotionalModule = ({ insight, financialData }: EmotionalModuleProps) => {
@@ -66,7 +66,7 @@ export const EmotionalModule = ({ insight, financialData }: EmotionalModuleProps
             Corrélations Émotions-Dépenses
           </h4>
           <div className="space-y-3">
-            {emotionalData.correlations.map((corr: any, index: number) => (
+                            {emotionalData.correlations.map((corr, index: number) => (
               <div key={index} className="space-y-2">
                 <div className="flex justify-between items-center">
                   <span className="text-sm font-medium">{corr.emotion}</span>

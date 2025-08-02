@@ -5,8 +5,8 @@ import { Progress } from '@/components/ui/progress';
 import { Eye, TrendingUp, AlertTriangle, CheckCircle } from 'lucide-react';
 
 interface PredictionsModuleProps {
-  insight?: any;
-  financialData?: any;
+  insight?: string;
+  financialData?: import('@/types').FinancialData;
 }
 
 export const PredictionsModule = ({ insight, financialData }: PredictionsModuleProps) => {

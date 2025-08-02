@@ -5,9 +5,11 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 
-interface TrendChartProps {}
+interface TrendChartProps {
+  className?: string;
+}
 
-export const TrendChart = ({}: TrendChartProps) => {
+export const TrendChart = ({ className }: TrendChartProps) => {
   const [timeframe, setTimeframe] = useState('6months');
 
   // Mock data for demonstration
@@ -69,9 +71,11 @@ export const TrendChart = ({}: TrendChartProps) => {
   );
 };
 
-interface WhatIfSimulatorProps {}
+interface WhatIfSimulatorProps {
+  className?: string;
+}
 
-export const WhatIfSimulator = ({}: WhatIfSimulatorProps) => {
+export const WhatIfSimulator = ({ className }: WhatIfSimulatorProps) => {
   const [scenarios, setScenarios] = useState([
     { id: 1, name: 'Augmentation salaire +10%', impact: 320, active: false },
     { id: 2, name: 'Réduction abonnements -20%', impact: 65, active: false },
