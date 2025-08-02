@@ -1,74 +1,64 @@
 
-import React from 'react';
+import { forwardRef } from 'react';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 
 interface GlassCardProps extends React.HTMLAttributes<HTMLDivElement> {
-  variant?: 'default' | 'premium' | 'hero' | 'floating';
+  variant?: 'default' | 'premium' | 'hero';
   blur?: 'sm' | 'md' | 'lg' | 'xl';
   glow?: boolean;
   interactive?: boolean;
 }
 
-export const GlassCard = React.forwardRef<HTMLDivElement, GlassCardProps>(
+const GlassCard = forwardRef<HTMLDivElement, GlassCardProps>(
   ({ className, variant = 'default', blur = 'md', glow = false, interactive = false, children, ...props }, ref) => {
-    const variants = {
-      default: "bg-background/40 border-border/20",
-      premium: "bg-gradient-to-br from-background/60 to-background/20 border-primary/20 shadow-2xl",
-      hero: "bg-gradient-to-br from-primary/10 to-secondary/10 border-primary/30 shadow-[0_0_50px_rgba(0,0,0,0.3)]",
-      floating: "bg-background/80 border-border/40 shadow-[0_20px_60px_rgba(0,0,0,0.2)]"
-    };
-
     const blurClasses = {
-      sm: "backdrop-blur-sm",
-      md: "backdrop-blur-md", 
-      lg: "backdrop-blur-lg",
-      xl: "backdrop-blur-xl"
+      sm: 'backdrop-blur-sm',
+      md: 'backdrop-blur-md',
+      lg: 'backdrop-blur-lg',
+      xl: 'backdrop-blur-xl'
     };
 
-    const baseClass = cn(
-      "rounded-xl border backdrop-saturate-150 transition-all duration-300",
-      blurClasses[blur],
-      variants[variant],
-      glow && "shadow-[0_0_30px_var(--theme-primary,hsl(var(--primary)))] shadow-primary/20",
-      interactive && "hover:scale-[1.02] hover:shadow-2xl cursor-pointer",
-      className
-    );
+    const variantClasses = {
+      default: 'bg-white/10 border-white/20',
+      premium: 'bg-gradient-to-br from-white/20 to-white/10 border-white/30 shadow-xl',
+      hero: 'bg-gradient-to-br from-purple-500/20 via-pink-500/20 to-cyan-500/20 border-purple-500/30 shadow-2xl'
+    };
 
-    // Extract only the event handlers that actually exist on React HTMLDivElement props
-    const {
-      onDrag,
-      onDragStart,
-      onDragEnd,
-      draggable,
-      onAnimationStart,
-      onAnimationEnd,
-      onAnimationIteration,
-      onTransitionEnd,
-      ...safeProps
-    } = props;
+    const glowClasses = glow ? 'shadow-purple-500/25 shadow-2xl' : '';
 
-    if (interactive) {
-      return (
-        <motion.div
-          ref={ref}
-          className={baseClass}
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          transition={{ duration: 0.2 }}
-          {...safeProps}
-        >
-          {children}
-        </motion.div>
-      );
-    }
+    const Component = interactive ? motion.div : 'div';
+    const motionProps = interactive ? {
+      whileHover: { 
+        scale: 1.02,
+        y: -2,
+        transition: { duration: 0.2 }
+      },
+      whileTap: { 
+        scale: 0.98,
+        transition: { duration: 0.1 }
+      }
+    } : {};
 
     return (
-      <div ref={ref} className={baseClass} {...props}>
+      <Component
+        ref={ref}
+        className={cn(
+          'rounded-2xl border backdrop-blur-xl transition-all duration-300',
+          blurClasses[blur],
+          variantClasses[variant],
+          glowClasses,
+          className
+        )}
+        {...motionProps}
+        {...props}
+      >
         {children}
-      </div>
+      </Component>
     );
   }
 );
 
-GlassCard.displayName = "GlassCard";
+GlassCard.displayName = 'GlassCard';
+
+export { GlassCard };

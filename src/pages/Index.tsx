@@ -1,19 +1,18 @@
 
 import { useState, useEffect } from 'react';
-import { QuestionInput } from '@/components/QuestionInput';
-import { FinancialDataForm } from '@/components/FinancialDataForm';
-import { RevolutionaryDashboard } from '@/components/RevolutionaryDashboard';
-import { AdvancedParticleSystem } from '@/components/AdvancedParticleSystem';
-import { ThemeSystem } from '@/components/ThemeSystem';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useStore } from '@/store/useStore';
 import { useAdvancedFinancialEngine } from '@/hooks/useAdvancedFinancialEngine';
 import { useSoundSystem } from '@/hooks/useSoundSystem';
+import { HeroSection } from '@/components/HeroSection';
+import { ConversationalInterface } from '@/components/ConversationalInterface';
+import { LivingDataDashboard } from '@/components/LivingDataDashboard';
+import { FinancialDataForm } from '@/components/FinancialDataForm';
+import { AdvancedParticleSystem } from '@/components/AdvancedParticleSystem';
 import { GlassCard } from '@/components/ui/glass-card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { ArrowLeft, Brain, Sparkles } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { FinancialData, Exploration } from '@/types';
 
 const Index = () => {
   const { 
@@ -59,13 +58,13 @@ const Index = () => {
     playSound('click');
   };
 
-  const handleDataSubmit = async (data: FinancialData) => {
+  const handleDataSubmit = async (data: any) => {
     setCurrentStep('revelation');
     playSound('reveal');
     
     const newInsight = await calculateAdvancedInsight(data, question);
     
-    const exploration: Exploration = {
+    const exploration = {
       id: Date.now().toString(),
       question,
       data,
@@ -105,8 +104,6 @@ const Index = () => {
 
   return (
     <>
-      <ThemeSystem />
-      
       <AnimatePresence mode="wait">
         {currentStep === 'question' && (
           <motion.div
@@ -116,7 +113,7 @@ const Index = () => {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <QuestionInput onQuestionSubmit={handleQuestionSubmit} />
+            <ConversationalInterface onQuestionSubmit={handleQuestionSubmit} />
           </motion.div>
         )}
 
@@ -128,7 +125,7 @@ const Index = () => {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <RevolutionaryDashboard 
+            <LivingDataDashboard 
               insight={insight} 
               question={question} 
               onNewExploration={handleNewExploration}
