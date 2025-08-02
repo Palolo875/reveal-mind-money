@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { GlassCard } from '@/components/ui/glass-card';
@@ -7,6 +8,13 @@ import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useStore } from '@/store/useStore';
 import { AdvancedParticleSystem } from '@/components/AdvancedParticleSystem';
+import { PredictiveAnalytics } from '@/components/PredictiveAnalytics';
+import { GoalTracker } from '@/components/GoalTracker';
+import { EmotionalInsightEngine } from '@/components/EmotionalInsightEngine';
+import { FinancialComparator } from '@/components/FinancialComparator';
+import { LearningModule } from '@/components/LearningModule';
+import { PredictionsModule } from '@/components/PredictionsModule';
+import { EmotionalModule } from '@/components/EmotionalModule';
 import { 
   Brain, 
   Zap, 
@@ -34,6 +42,99 @@ const useSoundSystemFallback = () => ({
   playSound: (sound: string) => console.log(`Playing sound: ${sound}`),
   playHaptic: (intensity: string) => console.log(`Haptic feedback: ${intensity}`)
 });
+
+// Simple components for missing features
+const SimpleAdvancedTrendChart = ({ financialData }: any) => (
+  <GlassCard variant="premium" className="p-8">
+    <h3 className="text-2xl font-bold mb-6 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+      📈 Tendances Avancées
+    </h3>
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="text-center p-4 bg-muted/20 rounded-lg">
+        <div className="text-3xl font-bold text-success">+12%</div>
+        <div className="text-sm text-muted-foreground">Croissance mensuelle</div>
+      </div>
+      <div className="text-center p-4 bg-muted/20 rounded-lg">
+        <div className="text-3xl font-bold text-primary">-3%</div>
+        <div className="text-sm text-muted-foreground">Dépenses variables</div>
+      </div>
+      <div className="text-center p-4 bg-muted/20 rounded-lg">
+        <div className="text-3xl font-bold text-secondary">85%</div>
+        <div className="text-sm text-muted-foreground">Objectifs atteints</div>
+      </div>
+    </div>
+  </GlassCard>
+);
+
+const SimpleWhatIfSimulator = ({ financialData }: any) => (
+  <GlassCard variant="premium" className="p-8">
+    <h3 className="text-2xl font-bold mb-6 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+      🎯 Simulateur "Et si ?"
+    </h3>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <Button variant="outline" className="h-20 flex flex-col gap-2 hover:scale-105 transition-transform">
+        <span>💰</span>
+        <span>Augmentation de salaire (+500€)</span>
+      </Button>
+      <Button variant="outline" className="h-20 flex flex-col gap-2 hover:scale-105 transition-transform">
+        <span>🏠</span>
+        <span>Achat immobilier</span>
+      </Button>
+      <Button variant="outline" className="h-20 flex flex-col gap-2 hover:scale-105 transition-transform">
+        <span>📈</span>
+        <span>Investissements (+1000€)</span>
+      </Button>
+      <Button variant="outline" className="h-20 flex flex-col gap-2 hover:scale-105 transition-transform">
+        <span>🎓</span>
+        <span>Formation professionnelle</span>
+      </Button>
+    </div>
+  </GlassCard>
+);
+
+const SimpleOptimizationModule = ({ insight }: any) => (
+  <GlassCard variant="premium" className="p-8">
+    <h3 className="text-2xl font-bold mb-6 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+      ⚡ Optimisation Intelligente
+    </h3>
+    <div className="space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="p-4 bg-success/10 rounded-lg border border-success/20">
+          <h4 className="font-semibold text-success mb-2">💰 Potentiel d'économie</h4>
+          <div className="text-2xl font-bold text-success">
+            {Math.round((insight?.projections?.monthly || 0) * 0.2)}€/mois
+          </div>
+          <p className="text-sm text-muted-foreground mt-2">
+            Optimisation automatique détectée
+          </p>
+        </div>
+        
+        <div className="p-4 bg-primary/10 rounded-lg border border-primary/20">
+          <h4 className="font-semibold text-primary mb-2">🎯 Score d'efficacité</h4>
+          <div className="text-2xl font-bold text-primary">
+            {insight?.healthScore || 85}/100
+          </div>
+          <Progress value={insight?.healthScore || 85} className="mt-2 h-2" />
+        </div>
+      </div>
+
+      <div className="space-y-3">
+        <h4 className="font-semibold">🔧 Actions d'optimisation recommandées :</h4>
+        <div className="space-y-2">
+          <div className="p-3 bg-muted/20 rounded-lg">
+            <span className="font-medium">1.</span> Renégocier vos abonnements (-15€/mois)
+          </div>
+          <div className="p-3 bg-muted/20 rounded-lg">
+            <span className="font-medium">2.</span> Automatiser votre épargne (+200€/mois)
+          </div>
+          <div className="p-3 bg-muted/20 rounded-lg">
+            <span className="font-medium">3.</span> Optimiser vos dépenses transport (-45€/mois)
+          </div>
+        </div>
+      </div>
+    </div>
+  </GlassCard>
+);
 
 export const RevolutionaryDashboard = ({ 
   insight, 
@@ -273,42 +374,36 @@ export const RevolutionaryDashboard = ({
                   </div>
                 </TabsContent>
 
-                {/* Other tabs with enhanced content */}
                 <TabsContent value="insights">
-                  <GlassCard variant="premium" className="p-8">
-                    <h3 className="text-2xl font-bold mb-6 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                      🧠 Insights IA Avancés
-                    </h3>
-                    <div className="space-y-6">
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div className="p-6 bg-muted/20 rounded-lg border border-primary/20">
-                          <h4 className="font-semibold mb-3">Analyse Comportementale</h4>
-                          <p className="text-muted-foreground">Patterns de dépenses détectés et corrélations émotionnelles identifiées.</p>
-                        </div>
-                        <div className="p-6 bg-muted/20 rounded-lg border border-secondary/20">
-                          <h4 className="font-semibold mb-3">Recommandations Personnalisées</h4>
-                          <p className="text-muted-foreground">Stratégies adaptées à votre profil psychologique financier.</p>
-                        </div>
-                      </div>
-                    </div>
-                  </GlassCard>
+                  <SimpleAdvancedTrendChart financialData={financialData} />
                 </TabsContent>
 
-                {tabs.slice(2).map(tab => (
-                  <TabsContent key={tab.id} value={tab.id}>
-                    <GlassCard variant="premium" className="p-8">
-                      <h3 className="text-2xl font-bold mb-6 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                        <tab.icon className="w-6 h-6 inline mr-2" />
-                        {tab.label} - Version Révolutionnaire
-                      </h3>
-                      <div className="space-y-4">
-                        <p>Fonctionnalités ultra-avancées disponibles...</p>
-                        <p>Interface immersive et interactive optimisée...</p>
-                        <p>IA de pointe pour des insights révolutionnaires...</p>
-                      </div>
-                    </GlassCard>
-                  </TabsContent>
-                ))}
+                <TabsContent value="predictions">
+                  <PredictionsModule insight={insight} financialData={financialData} />
+                </TabsContent>
+
+                <TabsContent value="simulations">
+                  <SimpleWhatIfSimulator financialData={financialData} />
+                </TabsContent>
+
+                <TabsContent value="optimization">
+                  <SimpleOptimizationModule insight={insight} />
+                </TabsContent>
+
+                <TabsContent value="social">
+                  <FinancialComparator 
+                    userInsight={insight}
+                    marketData={insight?.marketComparisons}
+                  />
+                </TabsContent>
+
+                <TabsContent value="emotional">
+                  <EmotionalModule insight={insight} financialData={financialData} />
+                </TabsContent>
+
+                <TabsContent value="learning">
+                  <LearningModule insight={insight} financialData={financialData} />
+                </TabsContent>
               </motion.div>
             )}
           </AnimatePresence>
