@@ -481,6 +481,8 @@ export const RevolutionaryDashboard = ({
 
                 <TabsContent value="share">
                   <AdvancedShareExport 
+                    title={`Révélation Financière - ${question}`}
+                    description={insight?.insight || "Analyse financière personnalisée générée par l'IA"}
                     insight={insight}
                     financialData={financialData}
                     onExportComplete={(format, data) => {
