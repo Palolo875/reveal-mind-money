@@ -1,3 +1,4 @@
+
 import { FinancialData, AdvancedInsight } from '@/store/useStore';
 
 // Configuration des APIs IA
@@ -358,7 +359,7 @@ Réponds uniquement en JSON valide avec cette structure :
       ],
       hiddenCosts: [
         totalVariable > totalIncome * 0.35 ? `Dépenses variables élevées (${(totalVariable/totalIncome*100).toFixed(1)}%)` : '',
-        data.mood >= 8 ? 'État émotionnel élevé - risque d'achats impulsifs' : '',
+        data.mood >= 8 ? 'État émotionnel élevé - risque d\'achats impulsifs' : '',
         totalFixed > totalIncome * 0.55 ? 'Charges fixes élevées - renégociation recommandée' : ''
       ].filter(Boolean),
       projections: {
