@@ -4,7 +4,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useStore } from '@/store/useStore';
 import { useAdvancedFinancialEngine } from '@/hooks/useAdvancedFinancialEngine';
 import { useSoundSystem } from '@/hooks/useSoundSystem';
-import { HeroSection } from '@/components/HeroSection';
 import { ConversationalInterface } from '@/components/ConversationalInterface';
 import { LivingDataDashboard } from '@/components/LivingDataDashboard';
 import { FinancialDataForm } from '@/components/FinancialDataForm';
@@ -13,6 +12,7 @@ import { GlassCard } from '@/components/ui/glass-card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { ArrowLeft, Brain, Sparkles } from 'lucide-react';
+import { FinancialData, Exploration } from '@/store/useStore';
 
 const Index = () => {
   const { 
@@ -58,13 +58,13 @@ const Index = () => {
     playSound('click');
   };
 
-  const handleDataSubmit = async (data: any) => {
+  const handleDataSubmit = async (data: FinancialData) => {
     setCurrentStep('revelation');
     playSound('reveal');
     
     const newInsight = await calculateAdvancedInsight(data, question);
     
-    const exploration = {
+    const exploration: Exploration = {
       id: Date.now().toString(),
       question,
       data,
