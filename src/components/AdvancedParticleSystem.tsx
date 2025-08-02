@@ -34,8 +34,16 @@ export const AdvancedParticleSystem = ({
     sunset: ['#f97316', '#ec4899', '#fbbf24'],
     ocean: ['#0ea5e9', '#3b82f6', '#06b6d4'],
     forest: ['#22c55e', '#84cc16', '#10b981'],
-    galaxy: ['#a855f7', '#d946ef', '#8b5cf6']
+    galaxy: ['#a855f7', '#d946ef', '#8b5cf6'],
+    neural: ['#FF4081', '#FF5722', '#9C27B0'],
+    cloudscape: ['#40A4FF', '#26C6DA', '#66BB6A'],
+    liquidMetal: ['#333333', '#666666', '#999999'],
+    mysticRose: ['#FF69B4', '#FF8A65', '#BA68C8'],
+    cosmicFire: ['#FF5722', '#2196F3', '#FFC107']
   };
+
+  // Default fallback colors
+  const DEFAULT_COLORS = ['#3b82f6', '#8b5cf6', '#06b6d4'];
 
   useEffect(() => {
     if (!preferences.animationsEnabled) return;
@@ -52,7 +60,8 @@ export const AdvancedParticleSystem = ({
     };
 
     const initParticles = () => {
-      const colors = THEME_COLORS[theme];
+      // Safely get colors with fallback
+      const colors = THEME_COLORS[theme as keyof typeof THEME_COLORS] || DEFAULT_COLORS;
       const themeConfig = getThemeConfig(theme);
       const particleCount = count || themeConfig.particles.count;
       
