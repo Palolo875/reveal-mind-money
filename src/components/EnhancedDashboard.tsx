@@ -63,11 +63,15 @@ interface EnhancedDashboardProps {
   insight: FinancialInsight;
   question: string;
   onNewExploration: () => void;
-  financialData?: any;
+  financialData?: import('@/types').FinancialData;
 }
 
 // Create simple fallback components for missing ones
-const SimpleAdvancedTrendChart = ({ timeframe, onTimeframeChange, financialData }: any) => (
+const SimpleAdvancedTrendChart = ({ timeframe, onTimeframeChange, financialData }: {
+  timeframe: string;
+  onTimeframeChange: (value: string) => void;
+  financialData?: import('@/types').FinancialData;
+}) => (
   <Card className="card-premium p-8">
     <h3 className="text-2xl font-bold mb-6 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
       📈 Tendances Avancées
@@ -92,7 +96,10 @@ const SimpleAdvancedTrendChart = ({ timeframe, onTimeframeChange, financialData 
   </Card>
 );
 
-const SimpleWhatIfSimulator = ({ baseData, currentInsight }: any) => (
+const SimpleWhatIfSimulator = ({ baseData, currentInsight }: {
+  baseData?: import('@/types').FinancialData;
+  currentInsight?: string;
+}) => (
   <Card className="card-premium p-8">
     <h3 className="text-2xl font-bold mb-6 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
       🎯 Simulateur "Et si ?"
@@ -121,7 +128,10 @@ const SimpleWhatIfSimulator = ({ baseData, currentInsight }: any) => (
   </Card>
 );
 
-const SimpleHiddenCostsDetector = ({ hiddenCosts, riskAssessment }: any) => (
+const SimpleHiddenCostsDetector = ({ hiddenCosts, riskAssessment }: {
+  hiddenCosts: string[];
+  riskAssessment?: { score: number; level: string; factors: string[] };
+}) => (
   <Card className="card-premium p-8">
     <h3 className="text-2xl font-bold mb-6 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
       🕵️ Détecteur de Coûts Cachés
@@ -154,7 +164,11 @@ const SimpleHiddenCostsDetector = ({ hiddenCosts, riskAssessment }: any) => (
   </Card>
 );
 
-const SimpleSmartRecommendations = ({ recommendations, emotionalState, healthScore }: any) => (
+const SimpleSmartRecommendations = ({ recommendations, emotionalState, healthScore }: {
+  recommendations: string[];
+  emotionalState: string;
+  healthScore: number;
+}) => (
   <Card className="card-premium">
     <h3 className="text-lg font-semibold text-primary mb-4">💡 Recommandations Intelligentes</h3>
     <div className="space-y-3">

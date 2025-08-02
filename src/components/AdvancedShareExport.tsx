@@ -18,9 +18,9 @@ import {
 interface ShareExportProps {
   title: string;
   description: string;
-  financialData: any;
-  insight: any;
-  onExportComplete?: (format: string, data: any) => void;
+  financialData: import('@/types').FinancialData;
+  insight: import('@/types').AdvancedInsight;
+  onExportComplete?: (format: string, data: Record<string, unknown>) => void;
 }
 
 export const AdvancedShareExport = ({ title, description, financialData, insight, onExportComplete }: ShareExportProps) => {

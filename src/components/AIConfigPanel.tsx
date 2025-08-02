@@ -108,7 +108,7 @@ export const AIConfigPanel = () => {
     if (providerId === aiProvider) return;
 
     try {
-      await switchAIProvider(providerId as any);
+      await switchAIProvider(providerId as import('@/types').AIProvider);
       
       // Mettre à jour l'interface
       setProviders(prev => prev.map(p => ({

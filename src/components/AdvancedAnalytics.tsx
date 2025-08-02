@@ -343,8 +343,8 @@ export const ComprehensiveHiddenCostsDetector = ({
   riskAssessment 
 }: {
   hiddenCosts: string[];
-  financialData?: any;
-  riskAssessment?: any;
+  financialData?: FinancialData;
+  riskAssessment?: { score: number; level: string; factors: string[] };
 }) => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [scanProgress, setScanProgress] = useState(0);

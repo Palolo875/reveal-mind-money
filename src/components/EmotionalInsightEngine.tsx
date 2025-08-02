@@ -24,7 +24,7 @@ interface EmotionalInsightEngineProps {
     correlations: { emotion: string; impact: number }[];
     suggestions: string[];
   };
-  financialData?: any;
+  financialData?: import('@/types').FinancialData;
 }
 
 export const EmotionalInsightEngine = ({ 
