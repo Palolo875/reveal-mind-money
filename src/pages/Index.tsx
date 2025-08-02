@@ -3,17 +3,15 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useStore } from '@/store/useStore';
 import { useAdvancedFinancialEngine } from '@/hooks/useAdvancedFinancialEngine';
-import { useSoundSystem } from '@/hooks/useSoundSystem';
 import { ConversationalInterface } from '@/components/ConversationalInterface';
-import { LivingDataDashboard } from '@/components/LivingDataDashboard';
+import { RevolutionaryDashboard } from '@/components/RevolutionaryDashboard';
 import { FinancialDataForm } from '@/components/FinancialDataForm';
 import { AdvancedParticleSystem } from '@/components/AdvancedParticleSystem';
 import { GlassCard } from '@/components/ui/glass-card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { ArrowLeft, Brain, Sparkles } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { FinancialData, Exploration } from '@/types';
+import { FinancialData, Exploration } from '@/store/useStore';
 
 const Index = () => {
   const { 
@@ -22,11 +20,11 @@ const Index = () => {
     isAnalyzing,
     setCurrentStep, 
     setCurrentExploration,
-    addExploration 
+    addExploration,
+    theme
   } = useStore();
   
   const { insight, calculateAdvancedInsight } = useAdvancedFinancialEngine();
-  const { playSound } = useSoundSystem();
   const [question, setQuestion] = useState('');
   const [analysisStage, setAnalysisStage] = useState('');
 
@@ -44,24 +42,21 @@ const Index = () => {
       const interval = setInterval(() => {
         if (stageIndex < stages.length) {
           setAnalysisStage(stages[stageIndex]);
-          playSound('transition');
           stageIndex++;
         }
       }, 700);
       
       return () => clearInterval(interval);
     }
-  }, [isAnalyzing, playSound]);
+  }, [isAnalyzing]);
 
   const handleQuestionSubmit = (userQuestion: string) => {
     setQuestion(userQuestion);
     setCurrentStep('data');
-    playSound('click');
   };
 
   const handleDataSubmit = async (data: FinancialData) => {
     setCurrentStep('revelation');
-    playSound('reveal');
     
     const newInsight = await calculateAdvancedInsight(data, question);
     
@@ -71,7 +66,7 @@ const Index = () => {
       data,
       insights: newInsight,
       timestamp: Date.now(),
-      theme: useStore.getState().theme
+      theme
     };
     
     setCurrentExploration(exploration);
@@ -82,7 +77,6 @@ const Index = () => {
     setCurrentStep('question');
     setCurrentExploration(null);
     setQuestion('');
-    playSound('transition');
   };
 
   const getStepProgress = () => {
@@ -126,7 +120,7 @@ const Index = () => {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <LivingDataDashboard 
+            <RevolutionaryDashboard 
               insight={insight} 
               question={question} 
               onNewExploration={handleNewExploration}
@@ -147,7 +141,6 @@ const Index = () => {
             <AdvancedParticleSystem count={30} />
             
             <div className="container max-w-4xl mx-auto px-6 py-8 relative z-10">
-              {/* Enhanced Header */}
               <motion.div 
                 initial={{ y: -50, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
@@ -158,10 +151,7 @@ const Index = () => {
                     <Button 
                       variant="ghost" 
                       size="sm" 
-                      onClick={() => {
-                        setCurrentStep('question');
-                        playSound('click');
-                      }}
+                      onClick={() => setCurrentStep('question')}
                       className="bg-background/20 hover:bg-background/40 backdrop-blur-sm"
                     >
                       <ArrowLeft className="w-4 h-4 mr-2" />
@@ -187,7 +177,6 @@ const Index = () => {
                 </GlassCard>
               </motion.div>
 
-              {/* Enhanced Data Form Header */}
               <motion.div
                 initial={{ scale: 0.9, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
@@ -214,7 +203,6 @@ const Index = () => {
           </motion.div>
         )}
 
-        {/* Revolutionary Loading State */}
         {currentStep === 'revelation' && isAnalyzing && (
           <motion.div
             key="loading"

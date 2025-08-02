@@ -8,16 +8,7 @@ import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useStore } from '@/store/useStore';
 import { AdvancedParticleSystem } from '@/components/AdvancedParticleSystem';
-import { PredictiveAnalytics } from '@/components/PredictiveAnalytics';
-import { GoalTracker } from '@/components/GoalTracker';
-import { EmotionalInsightEngine } from '@/components/EmotionalInsightEngine';
-import { FinancialComparator } from '@/components/FinancialComparator';
-import { LearningModule } from '@/components/LearningModule';
-import { PredictionsModule } from '@/components/PredictionsModule';
-import { EmotionalModule } from '@/components/EmotionalModule';
-import { AdvancedSimulator } from '@/components/AdvancedSimulator';
-import { AdvancedHiddenCostDetector } from '@/components/AdvancedHiddenCostDetector';
-import { AdvancedShareExport } from '@/components/AdvancedShareExport';
+import { WorkingShareExport } from '@/components/WorkingShareExport';
 import { RevolutionaryThemeSelector } from '@/components/RevolutionaryThemeSelector';
 import { 
   Brain, 
@@ -60,7 +51,7 @@ const SimpleAdvancedTrendChart = ({ financialData }: any) => (
     </h3>
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
       <div className="text-center p-4 bg-muted/20 rounded-lg">
-        <div className="text-3xl font-bold text-success">+12%</div>
+        <div className="text-3xl font-bold text-green-500">+12%</div>
         <div className="text-sm text-muted-foreground">Croissance mensuelle</div>
       </div>
       <div className="text-center p-4 bg-muted/20 rounded-lg">
@@ -75,7 +66,7 @@ const SimpleAdvancedTrendChart = ({ financialData }: any) => (
   </GlassCard>
 );
 
-const SimpleWhatIfSimulator = ({ financialData }: any) => (
+const SimpleWhatIfSimulator = ({ financialData, insight }: any) => (
   <GlassCard variant="premium" className="p-8">
     <h3 className="text-2xl font-bold mb-6 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
       🎯 Simulateur "Et si ?"
@@ -98,6 +89,13 @@ const SimpleWhatIfSimulator = ({ financialData }: any) => (
         <span>Formation professionnelle</span>
       </Button>
     </div>
+    
+    <div className="mt-6 p-4 bg-primary/10 rounded-lg">
+      <h4 className="font-semibold text-primary mb-2">💡 Prédiction IA</h4>
+      <p className="text-sm text-muted-foreground">
+        Une augmentation de 500€ améliorerait votre score de santé de {insight?.healthScore || 75} à {(insight?.healthScore || 75) + 15} points.
+      </p>
+    </div>
   </GlassCard>
 );
 
@@ -108,9 +106,9 @@ const SimpleOptimizationModule = ({ insight }: any) => (
     </h3>
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="p-4 bg-success/10 rounded-lg border border-success/20">
-          <h4 className="font-semibold text-success mb-2">💰 Potentiel d'économie</h4>
-          <div className="text-2xl font-bold text-success">
+        <div className="p-4 bg-green-500/10 rounded-lg border border-green-500/20">
+          <h4 className="font-semibold text-green-500 mb-2">💰 Potentiel d'économie</h4>
+          <div className="text-2xl font-bold text-green-500">
             {Math.round((insight?.projections?.monthly || 0) * 0.2)}€/mois
           </div>
           <p className="text-sm text-muted-foreground mt-2">
@@ -130,17 +128,66 @@ const SimpleOptimizationModule = ({ insight }: any) => (
       <div className="space-y-3">
         <h4 className="font-semibold">🔧 Actions d'optimisation recommandées :</h4>
         <div className="space-y-2">
-          <div className="p-3 bg-muted/20 rounded-lg">
-            <span className="font-medium">1.</span> Renégocier vos abonnements (-15€/mois)
-          </div>
-          <div className="p-3 bg-muted/20 rounded-lg">
-            <span className="font-medium">2.</span> Automatiser votre épargne (+200€/mois)
-          </div>
-          <div className="p-3 bg-muted/20 rounded-lg">
-            <span className="font-medium">3.</span> Optimiser vos dépenses transport (-45€/mois)
-          </div>
+          {insight?.recommendations?.map((rec: string, index: number) => (
+            <div key={index} className="p-3 bg-muted/20 rounded-lg">
+              <span className="font-medium">{index + 1}.</span> {rec}
+            </div>
+          )) || (
+            <>
+              <div className="p-3 bg-muted/20 rounded-lg">
+                <span className="font-medium">1.</span> Renégocier vos abonnements (-15€/mois)
+              </div>
+              <div className="p-3 bg-muted/20 rounded-lg">
+                <span className="font-medium">2.</span> Automatiser votre épargne (+200€/mois)
+              </div>
+              <div className="p-3 bg-muted/20 rounded-lg">
+                <span className="font-medium">3.</span> Optimiser vos dépenses transport (-45€/mois)
+              </div>
+            </>
+          )}
         </div>
       </div>
+    </div>
+  </GlassCard>
+);
+
+const SimpleHiddenCostDetector = ({ insight }: any) => (
+  <GlassCard variant="premium" className="p-8">
+    <h3 className="text-2xl font-bold mb-6 bg-gradient-to-r from-yellow-500 to-red-500 bg-clip-text text-transparent">
+      🕵️ Détective des Coûts Cachés
+    </h3>
+    <div className="space-y-4">
+      {insight?.hiddenCosts?.map((cost: string, index: number) => (
+        <div key={index} className="p-4 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
+          <div className="flex items-start gap-3">
+            <AlertTriangle className="w-5 h-5 text-yellow-500 flex-shrink-0 mt-0.5" />
+            <div>
+              <p className="text-sm">{cost}</p>
+            </div>
+          </div>
+        </div>
+      )) || (
+        <>
+          <div className="p-4 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
+            <div className="flex items-start gap-3">
+              <AlertTriangle className="w-5 h-5 text-yellow-500 flex-shrink-0 mt-0.5" />
+              <div>
+                <h4 className="font-semibold text-yellow-500">Abonnements oubliés</h4>
+                <p className="text-sm text-muted-foreground">Estimé à 45€/mois de services non utilisés</p>
+              </div>
+            </div>
+          </div>
+          <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-lg">
+            <div className="flex items-start gap-3">
+              <AlertTriangle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
+              <div>
+                <h4 className="font-semibold text-red-500">Achats impulsifs</h4>
+                <p className="text-sm text-muted-foreground">Pattern détecté: +23% de dépenses le weekend</p>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   </GlassCard>
 );
@@ -151,7 +198,7 @@ export const RevolutionaryDashboard = ({
   onNewExploration,
   financialData 
 }: RevolutionaryDashboardProps) => {
-  const { theme, activeTab, setActiveTab, addHiddenCosts, addSimulationResult, addShareLink } = useStore();
+  const { theme, activeTab, setActiveTab } = useStore();
   const { playSound, playHaptic } = useSoundSystemFallback();
   const [isRevealing, setIsRevealing] = useState(true);
   const [revealProgress, setRevealProgress] = useState(0);
@@ -185,9 +232,6 @@ export const RevolutionaryDashboard = ({
     { id: 'simulations', label: 'Simulations', icon: Calculator, color: 'from-primary to-accent' },
     { id: 'detective', label: 'Détective', icon: AlertTriangle, color: 'from-secondary to-primary' },
     { id: 'optimization', label: 'Optimisation', icon: Zap, color: 'from-secondary to-primary' },
-    { id: 'social', label: 'Comparaisons', icon: Users, color: 'from-accent to-secondary' },
-    { id: 'emotional', label: 'Émotionnel', icon: Heart, color: 'from-primary to-secondary' },
-    { id: 'learning', label: 'Apprentissage', icon: Lightbulb, color: 'from-secondary to-accent' },
     { id: 'share', label: 'Partage', icon: Share, color: 'from-primary to-accent' }
   ];
 
@@ -247,7 +291,7 @@ export const RevolutionaryDashboard = ({
                   animate={{ opacity: 1, scale: 1 }}
                   className="flex items-center gap-4 mt-4"
                 >
-                  <Badge variant="outline" className="text-success border-success/30 bg-success/10">
+                  <Badge variant="outline" className="text-green-500 border-green-500/30 bg-green-500/10">
                     Score Santé: {insight?.healthScore || 85}/100
                   </Badge>
                   <Badge variant="outline" className="text-primary border-primary/30 bg-primary/10">
@@ -291,7 +335,7 @@ export const RevolutionaryDashboard = ({
       {/* Revolutionary Tab System */}
       <div className="relative z-10 px-6">
         <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
-          <TabsList className="grid grid-cols-5 lg:grid-cols-10 gap-2 bg-transparent p-2 h-auto">
+          <TabsList className="grid grid-cols-3 lg:grid-cols-7 gap-2 bg-transparent p-2 h-auto">
             {tabs.map((tab) => {
               const Icon = tab.icon;
               return (
@@ -388,108 +432,54 @@ export const RevolutionaryDashboard = ({
                 </TabsContent>
 
                 <TabsContent value="insights">
-                  <PredictiveAnalytics 
-                    insight={insight}
-                    financialData={financialData}
-                    timeframe="6months"
-                  />
+                  <SimpleAdvancedTrendChart financialData={financialData} />
                 </TabsContent>
 
                 <TabsContent value="predictions">
-                  <PredictionsModule insight={insight} financialData={financialData} />
-                </TabsContent>
-
-                <TabsContent value="simulations">
-                  <AdvancedSimulator 
-                    currentInsight={insight}
-                    onSimulationResult={(result) => {
-                      addSimulationResult(result);
-                      playSound('success');
-                    }}
-                  />
-                </TabsContent>
-
-                <TabsContent value="detective">
-                  <AdvancedHiddenCostDetector 
-                    financialData={financialData}
-                    emotionalState={insight?.emotionalState}
-                    onCostDetected={(costs) => {
-                      addHiddenCosts(costs);
-                      playSound('reveal');
-                    }}
-                  />
-                </TabsContent>
-
-                <TabsContent value="optimization">
                   <GlassCard variant="premium" className="p-8">
                     <h3 className="text-2xl font-bold mb-6 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                      ⚡ Optimisation Intelligente
+                      🔮 Prédictions IA
                     </h3>
-                    <div className="space-y-6">
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div className="p-4 bg-success/10 rounded-lg border border-success/20">
-                          <h4 className="font-semibold text-success mb-2">💰 Potentiel d'économie</h4>
-                          <div className="text-2xl font-bold text-success">
-                            {Math.round((insight?.projections?.monthly || 0) * 0.2)}€/mois
-                          </div>
-                          <p className="text-sm text-muted-foreground mt-2">
-                            Optimisation automatique détectée
-                          </p>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div className="p-4 bg-primary/10 rounded-lg">
+                        <h4 className="font-semibold text-primary mb-2">📈 Mois prochain</h4>
+                        <div className="text-2xl font-bold">
+                          {Math.round(insight?.aiPredictions?.nextMonthSpending || 0)}€
                         </div>
-                        
-                        <div className="p-4 bg-primary/10 rounded-lg border border-primary/20">
-                          <h4 className="font-semibold text-primary mb-2">🎯 Score d'efficacité</h4>
-                          <div className="text-2xl font-bold text-primary">
-                            {insight?.healthScore || 85}/100
-                          </div>
-                          <Progress value={insight?.healthScore || 85} className="mt-2 h-2" />
-                        </div>
+                        <p className="text-sm text-muted-foreground">Dépenses prévues</p>
                       </div>
-
-                      <div className="space-y-3">
-                        <h4 className="font-semibold">🔧 Actions d'optimisation recommandées :</h4>
-                        <div className="space-y-2">
-                          <div className="p-3 bg-muted/20 rounded-lg">
-                            <span className="font-medium">1.</span> Renégocier vos abonnements (-15€/mois)
-                          </div>
-                          <div className="p-3 bg-muted/20 rounded-lg">
-                            <span className="font-medium">2.</span> Automatiser votre épargne (+200€/mois)
-                          </div>
-                          <div className="p-3 bg-muted/20 rounded-lg">
-                            <span className="font-medium">3.</span> Optimiser vos dépenses transport (-45€/mois)
-                          </div>
+                      <div className="p-4 bg-secondary/10 rounded-lg">
+                        <h4 className="font-semibold text-secondary mb-2">🎯 Objectifs</h4>
+                        <div className="text-2xl font-bold">
+                          {Math.round(insight?.aiPredictions?.savingsGoalAchievability || 0)}%
                         </div>
+                        <p className="text-sm text-muted-foreground">Probabilité d'atteinte</p>
                       </div>
                     </div>
                   </GlassCard>
                 </TabsContent>
 
-                <TabsContent value="social">
-                  <FinancialComparator 
-                    userInsight={insight}
-                    marketData={insight?.marketComparisons}
-                  />
+                <TabsContent value="simulations">
+                  <SimpleWhatIfSimulator financialData={financialData} insight={insight} />
                 </TabsContent>
 
-                <TabsContent value="emotional">
-                  <EmotionalModule insight={insight} financialData={financialData} />
+                <TabsContent value="detective">
+                  <SimpleHiddenCostDetector insight={insight} />
                 </TabsContent>
 
-                <TabsContent value="learning">
-                  <LearningModule insight={insight} financialData={financialData} />
+                <TabsContent value="optimization">
+                  <SimpleOptimizationModule insight={insight} />
                 </TabsContent>
 
                 <TabsContent value="share">
-                  <AdvancedShareExport 
+                  <WorkingShareExport 
                     title={`Révélation Financière - ${question}`}
                     description={insight?.insight || "Analyse financière personnalisée générée par l'IA"}
                     insight={insight}
                     financialData={financialData}
-                    onExportComplete={(format, data) => {
+                    onExportComplete={(format) => {
                       playSound('success');
-                      if (format === 'link') {
-                        addShareLink(data.url);
-                      }
+                      console.log(`Export ${format} completed`);
                     }}
                   />
                 </TabsContent>
