@@ -12,7 +12,8 @@ import { GlassCard } from '@/components/ui/glass-card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { ArrowLeft, Brain, Sparkles } from 'lucide-react';
-import { FinancialData, Exploration } from '@/store/useStore';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FinancialData, Exploration } from '@/types';
 
 const Index = () => {
   const { 
