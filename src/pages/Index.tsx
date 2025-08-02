@@ -13,6 +13,7 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { ArrowLeft, Brain, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { FinancialData, Exploration } from '@/types';
 
 const Index = () => {
   const { 
@@ -58,13 +59,13 @@ const Index = () => {
     playSound('click');
   };
 
-  const handleDataSubmit = async (data: any) => {
+  const handleDataSubmit = async (data: FinancialData) => {
     setCurrentStep('revelation');
     playSound('reveal');
     
     const newInsight = await calculateAdvancedInsight(data, question);
     
-    const exploration = {
+    const exploration: Exploration = {
       id: Date.now().toString(),
       question,
       data,
